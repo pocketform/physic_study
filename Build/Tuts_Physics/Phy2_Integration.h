@@ -85,14 +85,14 @@ public:
 
 		PhysicsEngine::Instance()->SetPaused(false);
 
-		SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-6.25f, 2.0f, 10.0f));
-		SceneManager::Instance()->GetCamera()->SetPitch(0.0f);
-		SceneManager::Instance()->GetCamera()->SetYaw(0.0f);
-
-		/*day2_Q3*/
-		//SceneManager::Instance()->GetCamera()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+		//SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-6.25f, 2.0f, 10.0f));
 		//SceneManager::Instance()->GetCamera()->SetPitch(0.0f);
 		//SceneManager::Instance()->GetCamera()->SetYaw(0.0f);
+
+		/*day2_Q3*/
+		SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-20.0f, 3.0f, 0.0f));
+		SceneManager::Instance()->GetCamera()->SetPitch(0.0f);
+		SceneManager::Instance()->GetCamera()->SetYaw(270.0f);
 
 
 		PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f));		//No Gravity
@@ -143,6 +143,7 @@ public:
 		m_TrajectoryPoints.clear();
 		m_Sphere->Physics()->SetPosition(Vector3(-12.5f, 2.0f, 0.f));
 		m_Sphere->Physics()->SetLinearVelocity(Vector3(0.f, 2.5f, 0.0f));
+		m_Sphere->Physics()->SetAngularVelocity(Vector3(0.0f, 0.0f, -5.0f));
 		m_Sphere->Physics()->SetForce(Vector3(1.f, -1.f, 0.0f));
 	}
 

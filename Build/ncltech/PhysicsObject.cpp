@@ -4,6 +4,7 @@
 PhysicsObject::PhysicsObject()
 	: m_wsTransformInvalidated(true)
 	, m_Enabled(false)
+	, m_isCollide(false)
 	, m_Position(0.0f, 0.0f, 0.0f)
 	, m_LinearVelocity(0.0f, 0.0f, 0.0f)
 	, m_Force(0.0f, 0.0f, 0.0f)

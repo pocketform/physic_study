@@ -210,9 +210,14 @@ void PhysicsEngine::BroadPhaseCollisions()
 					cp.pObjectB = m_pObj2;
 					m_BroadphaseCollisionPairs.push_back(cp);
 				}
-
 			}
 		}
+	}
+
+	//reset the state of the collision
+	for (auto* obj : m_PhysicsObjects)
+	{
+		obj->m_isCollide = false;
 	}
 }
 
@@ -245,6 +250,8 @@ void PhysicsEngine::NarrowPhaseCollisions()
 			// Detects if the objects are colliding - Seperating Axis Theorem
 			if (colDetect.AreColliding(&colData))
 			{
+				cp.pObjectA->m_isCollide = true;
+				cp.pObjectB->m_isCollide = true;
 				//Draw collision data to the window if requested
 				// - Have to do this here as colData is only temporary. 
 				if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS)
@@ -259,7 +266,10 @@ void PhysicsEngine::NarrowPhaseCollisions()
 
 				if (okA && okB)
 				{
+
+
 					//-- TUTORIAL 5 CODE --
+
 					// Build full collision manifold that will also handle the collision response between the two objects in the solver stage
 					Manifold* manifold = new Manifold();
 					manifold->Initiate(cp.pObjectA, cp.pObjectB);

@@ -84,6 +84,8 @@ public:
 	//Add Constraints
 	void AddConstraint(Constraint* c) { m_vpConstraints.push_back(c); }
 	
+	//Remove Constraints by myself
+	void RemoveConstraint() { m_vpConstraints.clear(); }
 
 	//Update Physics Engine
 	void Update(float deltaTime);			//Remember DeltaTime is 'seconds' since last update not milliseconds

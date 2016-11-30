@@ -51,6 +51,7 @@ public:
 
 	//<--------- GETTERS ------------->
 	inline bool					IsEnabled()					const 	{ return m_Enabled; }
+	inline bool					IsColliding()						{ return m_isCollide; }
 
 	inline float				GetElasticity()				const 	{ return m_Elasticity; }
 	inline float				GetFriction()				const 	{ return m_Friction; }
@@ -105,6 +106,7 @@ public:
 protected:
 	Object*				m_pParent;			//Optional: Attached GameObject or NULL if none set
 	bool				m_Enabled;
+	bool				m_isCollide;		//detecte wether its colliding or not
 
 	mutable bool		m_wsTransformInvalidated;
 	mutable Matrix4		m_wsTransform;

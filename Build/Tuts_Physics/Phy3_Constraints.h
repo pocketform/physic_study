@@ -155,6 +155,12 @@ public:
 			drawConstraints = !drawConstraints;
 		}
 
+		//push a key to delete Constraint
+		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_C))
+		{
+			PhysicsEngine::Instance()->RemoveConstraint();
+		}
+
 		PhysicsEngine::Instance()->SetDebugDrawFlags(drawConstraints ? DEBUGDRAW_FLAGS_CONSTRAINT : NULL);
 
 	}

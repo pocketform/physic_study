@@ -80,6 +80,11 @@ public:
 	const Vector3 sc_pos = Vector3(4.5f, 1.5f, -5.0f);
 	const Vector3 cc_pos = Vector3(-0.5f, 1.5f, 5.0f);
 
+	bool cube_colliding = false;
+	bool sphere_sphere_colliding = false;
+	bool sphere_cube_colliding = false;
+
+
 	virtual void OnInitializeScene() override
 	{
 		SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 4.0f, 10.0f));
@@ -113,6 +118,12 @@ public:
 				true,									//Has Collision Shape
 				false,									//Dragable by the user
 				CommonUtils::GenColour(0.3f, 0.5f));	//Color
+
+			sphere->Physics()->SetOnCollisionCallback([&](PhysicsObject* self_obj, PhysicsObject* other_obj)
+			{
+				sphere_sphere_colliding = true;
+				return true;
+			});
 			this->AddGameObject(sphere);	
 
 			this->AddGameObject(CommonUtils::BuildSphereObject("",
@@ -136,6 +147,12 @@ public:
 				true,									//Has Collision Shape
 				false,									//Dragable by the user
 				CommonUtils::GenColour(0.3f, 0.5f));	//Color
+
+			sphere->Physics()->SetOnCollisionCallback([&](PhysicsObject* self_obj, PhysicsObject* other_obj)
+			{
+				sphere_cube_colliding = true;
+				return true;
+			});
 			this->AddGameObject(sphere);
 
 			this->AddGameObject(CommonUtils::BuildCuboidObject("",
@@ -159,6 +176,14 @@ public:
 				true,									//Has Collision Shape
 				false,									//Dragable by the user
 				CommonUtils::GenColour(0.3f, 0.5f));	//Color
+
+			//set color
+			cuboid->Physics()->SetOnCollisionCallback([&](PhysicsObject* self_obj, PhysicsObject* other_obj)
+			{
+				cube_colliding = true;
+				return true;
+			});
+
 			this->AddGameObject(cuboid);
 
 			this->AddGameObject(CommonUtils::BuildCuboidObject("",
@@ -194,26 +219,78 @@ public:
 				);
 
 			//Default Colour (not colliding)
-			Vector4 col = CommonUtils::GenColour(0.3f, 0.5f);
+			Vector4 beforeCol = CommonUtils::GenColour(0.3f, 0.5f);
+			Vector4 collideCol = CommonUtils::GenColour(0.7f, 0.3f);
+
 
 			Object* orbiting_sphere1 = this->FindGameObject("orbiting_sphere1");
 			if (orbiting_sphere1 != NULL)
 			{
 				orbiting_sphere1->Physics()->SetPosition(ss_pos + offset);
+				orbiting_sphere1->SetColour(beforeCol);
+				//if (sphere_sphere_colliding)
+				//{
+				//	orbiting_sphere1->SetColour(Vector4(1.f, 0.f, 1.f, 1.f));
+				//}
+				//else
+				//{
+				//	orbiting_sphere1->SetColour(Vector4(1.f, 0.f, 0.f, 1.f));
+				//}
+
+				sphere_sphere_colliding = false;
 			}
 
 			Object* orbiting_sphere2 = this->FindGameObject("orbiting_sphere2");
 			if (orbiting_sphere2 != NULL)
 			{
 				orbiting_sphere2->Physics()->SetPosition(sc_pos + offset);
+				orbiting_sphere2->SetColour(beforeCol);
+
+				//if (sphere_cube_colliding)
+				//{
+				//	orbiting_sphere2->SetColour(Vector4(1.f, 0.f, 1.f, 1.f));
+				//}
+				//else
+				//{
+				//	orbiting_sphere2->SetColour(Vector4(1.f, 0.f, 0.f, 1.f));
+				//}
+
+				sphere_cube_colliding = false;
 			}
 
 			Object* rotating_cuboid1 = this->FindGameObject("rotating_cuboid1");
 			if (rotating_cuboid1 != NULL)
 			{
 				rotating_cuboid1->Physics()->SetPosition(cc_pos + offset);
+				rotating_cuboid1->SetColour(beforeCol);
+
+				//if (cube_colliding)
+				//{
+				//	rotating_cuboid1->SetColour(Vector4(1.f, 0.f, 1.f, 1.f));
+				//}
+				//else
+				//{
+				//	rotating_cuboid1->SetColour(Vector4(1.f, 0.f, 0.f, 1.f));
+				//}
+
+				cube_colliding = false;
+			}
+
+			if (rotating_cuboid1->Physics()->IsColliding())
+			{
+				rotating_cuboid1->SetColour(collideCol);
+			}
+			if (orbiting_sphere2->Physics()->IsColliding())
+			{
+				orbiting_sphere2->SetColour(collideCol);
+			}
+			if (orbiting_sphere1->Physics()->IsColliding())
+			{
+				orbiting_sphere1->SetColour(collideCol);
 			}
 		}
+
+		
 
 
 		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_B))
