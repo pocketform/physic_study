@@ -250,8 +250,8 @@ void PhysicsEngine::NarrowPhaseCollisions()
 			// Detects if the objects are colliding - Seperating Axis Theorem
 			if (colDetect.AreColliding(&colData))
 			{
-				cp.pObjectA->m_isCollide = true;
-				cp.pObjectB->m_isCollide = true;
+				cp.pObjectA->m_isCollide = true;//get the collision information
+				cp.pObjectB->m_isCollide = true;//get the collision information
 				//Draw collision data to the window if requested
 				// - Have to do this here as colData is only temporary. 
 				if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS)

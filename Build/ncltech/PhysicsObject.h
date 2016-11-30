@@ -51,7 +51,7 @@ public:
 
 	//<--------- GETTERS ------------->
 	inline bool					IsEnabled()					const 	{ return m_Enabled; }
-	inline bool					IsColliding()						{ return m_isCollide; }
+	inline bool					IsColliding()				const   { return m_isCollide; }//set bool to check collision
 
 	inline float				GetElasticity()				const 	{ return m_Elasticity; }
 	inline float				GetFriction()				const 	{ return m_Friction; }

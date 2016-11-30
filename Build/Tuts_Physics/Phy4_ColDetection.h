@@ -80,9 +80,10 @@ public:
 	const Vector3 sc_pos = Vector3(4.5f, 1.5f, -5.0f);
 	const Vector3 cc_pos = Vector3(-0.5f, 1.5f, 5.0f);
 
-	bool cube_colliding = false;
-	bool sphere_sphere_colliding = false;
-	bool sphere_cube_colliding = false;
+	//for check colliction 
+	//bool cube_colliding = false;
+	//bool sphere_sphere_colliding = false;
+	//bool sphere_cube_colliding = false;
 
 
 	virtual void OnInitializeScene() override
@@ -118,12 +119,12 @@ public:
 				true,									//Has Collision Shape
 				false,									//Dragable by the user
 				CommonUtils::GenColour(0.3f, 0.5f));	//Color
-
-			sphere->Physics()->SetOnCollisionCallback([&](PhysicsObject* self_obj, PhysicsObject* other_obj)
-			{
-				sphere_sphere_colliding = true;
-				return true;
-			});
+			//initializase the value for check value
+			//sphere->Physics()->SetOnCollisionCallback([&](PhysicsObject* self_obj, PhysicsObject* other_obj)
+			//{
+			//	sphere_sphere_colliding = true;
+			//	return true;
+			//});
 			this->AddGameObject(sphere);	
 
 			this->AddGameObject(CommonUtils::BuildSphereObject("",
@@ -147,12 +148,12 @@ public:
 				true,									//Has Collision Shape
 				false,									//Dragable by the user
 				CommonUtils::GenColour(0.3f, 0.5f));	//Color
-
-			sphere->Physics()->SetOnCollisionCallback([&](PhysicsObject* self_obj, PhysicsObject* other_obj)
-			{
-				sphere_cube_colliding = true;
-				return true;
-			});
+			//initializase the value for check value
+			//sphere->Physics()->SetOnCollisionCallback([&](PhysicsObject* self_obj, PhysicsObject* other_obj)
+			//{
+			//	sphere_cube_colliding = true;
+			//	return true;
+			//});
 			this->AddGameObject(sphere);
 
 			this->AddGameObject(CommonUtils::BuildCuboidObject("",
@@ -178,11 +179,11 @@ public:
 				CommonUtils::GenColour(0.3f, 0.5f));	//Color
 
 			//set color
-			cuboid->Physics()->SetOnCollisionCallback([&](PhysicsObject* self_obj, PhysicsObject* other_obj)
-			{
-				cube_colliding = true;
-				return true;
-			});
+			//cuboid->Physics()->SetOnCollisionCallback([&](PhysicsObject* self_obj, PhysicsObject* other_obj)
+			//{
+			//	cube_colliding = true;
+			//	return true;
+			//});
 
 			this->AddGameObject(cuboid);
 
@@ -237,7 +238,7 @@ public:
 				//	orbiting_sphere1->SetColour(Vector4(1.f, 0.f, 0.f, 1.f));
 				//}
 
-				sphere_sphere_colliding = false;
+				//sphere_sphere_colliding = false;//set back the collision check
 			}
 
 			Object* orbiting_sphere2 = this->FindGameObject("orbiting_sphere2");
@@ -255,7 +256,7 @@ public:
 				//	orbiting_sphere2->SetColour(Vector4(1.f, 0.f, 0.f, 1.f));
 				//}
 
-				sphere_cube_colliding = false;
+				//sphere_cube_colliding = false;//set back the collision check
 			}
 
 			Object* rotating_cuboid1 = this->FindGameObject("rotating_cuboid1");
@@ -273,7 +274,7 @@ public:
 				//	rotating_cuboid1->SetColour(Vector4(1.f, 0.f, 0.f, 1.f));
 				//}
 
-				cube_colliding = false;
+				//cube_colliding = false;//set back the collision check 
 			}
 
 			if (rotating_cuboid1->Physics()->IsColliding())

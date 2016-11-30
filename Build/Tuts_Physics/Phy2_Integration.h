@@ -85,6 +85,7 @@ public:
 
 		PhysicsEngine::Instance()->SetPaused(false);
 
+		//originlly
 		//SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-6.25f, 2.0f, 10.0f));
 		//SceneManager::Instance()->GetCamera()->SetPitch(0.0f);
 		//SceneManager::Instance()->GetCamera()->SetYaw(0.0f);
