@@ -220,9 +220,9 @@ void CollisionDetectionSAT::GenContactPoints(Manifold* out_manifold)
 	std::vector < Plane > adjPlanes1, adjPlanes2;
 	
 	m_pShape1 -> GetIncidentReferencePolygon(m_pObj1,
-	m_BestColData._normal, &polygon1, &normal1, &adjPlanes1);
+		m_BestColData._normal, &polygon1, &normal1, &adjPlanes1);
 	m_pShape2 -> GetIncidentReferencePolygon(m_pObj2,
-	- m_BestColData._normal, &polygon2, &normal2, &adjPlanes2);
+		- m_BestColData._normal, &polygon2, &normal2, &adjPlanes2);
 	
 	
 	// If either shape1 or shape2 returned a single point , then it
@@ -237,15 +237,15 @@ void CollisionDetectionSAT::GenContactPoints(Manifold* out_manifold)
 	else if (polygon1.size() == 1)
 	{
 		out_manifold -> AddContact(polygon1.front(), polygon1.front()
-		+ m_BestColData._normal * m_BestColData._penetration,
-		m_BestColData._normal, m_BestColData._penetration);
+			+ m_BestColData._normal * m_BestColData._penetration,
+			m_BestColData._normal, m_BestColData._penetration);
 	}
 	else if (polygon2.size() == 1)
 	{
 		out_manifold -> AddContact(polygon2.front()
-		+ m_BestColData._normal * m_BestColData._penetration,
-		polygon2.front(), m_BestColData._normal,
-		m_BestColData._penetration);
+			+ m_BestColData._normal * m_BestColData._penetration,
+			polygon2.front(), m_BestColData._normal,
+			m_BestColData._penetration);
 	}
 	else
 	{
@@ -263,7 +263,8 @@ void CollisionDetectionSAT::GenContactPoints(Manifold* out_manifold)
 		if (fabs(Vector3::Dot(m_BestColData._normal, normal1))
 		> fabs(Vector3::Dot(m_BestColData._normal, normal2)))
 		{
-			float planeDist = -Vector3::Dot(-normal1, polygon1.front());			refPlane = Plane(-normal1, planeDist);
+			float planeDist = -Vector3::Dot(-normal1, polygon1.front());
+			refPlane = Plane(-normal1, planeDist);
 			refAdjPlanes = &adjPlanes1;
 			
 			incPolygon = &polygon2;

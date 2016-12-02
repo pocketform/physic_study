@@ -126,8 +126,20 @@ void PhysicsEngine::SolveConstraints()
 	for (Constraint* c : m_vpConstraints)	c->PreSolverStep(m_UpdateTimestep);
 
 	// Solve all Constraints and Collision Manifolds
-	for (Manifold* m : m_vpManifolds)		m->ApplyImpulse();
-	for (Constraint* c : m_vpConstraints)	c->ApplyImpulse();
+	//for (Manifold* m : m_vpManifolds)		m->ApplyImpulse();
+	//for (Constraint* c : m_vpConstraints)	c->ApplyImpulse();
+	for (size_t i = 0; i < SOLVER_ITERATIONS; ++i)
+	{
+		for (Manifold * m : m_vpManifolds)
+		{
+			m->ApplyImpulse(/*factor*/);
+		}
+
+		for (Constraint * c : m_vpConstraints)
+		{
+			c->ApplyImpulse();
+		}
+	}
 }
 
 

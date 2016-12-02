@@ -12,7 +12,7 @@ cover all the possibilities of sphere-cuboid collision shapes.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::: IF YOUR BORED! :::
-::::::::::::::::::::::
+::::::::::::::::::::::b
 	1.  The manifold at the moment stores a list of all points required to form it's
 	    perimeter. However, for collision resolution (next tutorial), the more
 		constraints the longer it will take to solve. One way to solve this
@@ -92,8 +92,8 @@ public:
 	bool m_Rotating;
 
 	const Vector3 ss_pos = Vector3(-5.5f, 1.5f, -5.0f);
-	const Vector3 sc_pos = Vector3(4.5f, 1.5f, -5.0f);
-	const Vector3 cc_pos = Vector3(-0.5f, 1.5f, 5.0f);
+	const Vector3 sc_pos = Vector3( 4.5f, 1.5f, -5.0f);
+	const Vector3 cc_pos = Vector3(-0.5f, 1.5f,  5.0f);
 
 	virtual void OnInitializeScene() override
 	{
@@ -171,7 +171,7 @@ public:
 				true,									//Has Physics Object
 				0.0f,									//Infinite Mass
 				true,									//Has Collision Shape
-				false,									//Dragable by the user
+				true,									//Dragable by the user
 				CommonUtils::GenColour(0.45f, 0.5f)));	//Color
 
 			this->AddGameObject(CommonUtils::BuildCuboidObject("",
