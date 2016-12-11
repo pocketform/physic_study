@@ -4,7 +4,12 @@
 PhysicsObject::PhysicsObject()
 	: m_wsTransformInvalidated(true)
 	, m_Enabled(false)
-	, m_isCollide(false)//initializase the collision
+	, m_isCollide(false)				//initialize the collision
+	, m_Rest_State(false)				//initialize not in rest state
+	, m_CoursWork(false)                //initialize not in coursework
+	, m_CanScore(false)                 //initialize can't get score
+	, m_DoScore(false)					//initialize don't add score
+	, m_score(0)						//initialize the score
 	, m_Position(0.0f, 0.0f, 0.0f)
 	, m_LinearVelocity(0.0f, 0.0f, 0.0f)
 	, m_Force(0.0f, 0.0f, 0.0f)

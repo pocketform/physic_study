@@ -137,8 +137,6 @@ public:
 				handle->Physics()->GetPosition(),									//Attachment Position on Object A	-> Currently the far right edge
 				cube->Physics()->GetPosition() + Vector3(-0.5f, -0.5f, -0.5f)));	//Attachment Position on Object B	-> Currently the far left edge 
 		}
-
-
 	}
 
 	virtual void OnUpdateScene(float dt) override
@@ -154,14 +152,11 @@ public:
 		{
 			drawConstraints = !drawConstraints;
 		}
-
 		//push a key to delete Constraint
 		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_C))
 		{
 			PhysicsEngine::Instance()->RemoveConstraint();
 		}
-
 		PhysicsEngine::Instance()->SetDebugDrawFlags(drawConstraints ? DEBUGDRAW_FLAGS_CONSTRAINT : NULL);
-
 	}
 };

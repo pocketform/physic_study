@@ -12,7 +12,7 @@ void Camera::HandleMouse(float dt)
 	if (Window::GetMouse()->ButtonDown(MOUSE_LEFT))
 	{
 		pitch -= (Window::GetMouse()->GetRelativePosition().y);
-		yaw -= (Window::GetMouse()->GetRelativePosition().x);
+		yaw   -= (Window::GetMouse()->GetRelativePosition().x);
 	}
 
 	//Bounds check the pitch, to be between straight up and straight down ;)
@@ -29,7 +29,7 @@ void Camera::HandleMouse(float dt)
 
 void Camera::HandleKeyboard(float dt)
 {
-	float speed = 3.5f * dt;	//3.5m per second
+	float speed = 15.f * dt;	//3.5m per second, the speed of moveing camera
 
 
 	//Bounds check the pitch, to be between straight up and straight down ;)

@@ -183,7 +183,6 @@ public:
 				true,									//Dragable by the user
 				CommonUtils::GenColour(0.5f, 1.0f)));	//Color
 		}
-
 	}
 
 	
@@ -246,6 +245,5 @@ public:
 			drawFlags ^= DEBUGDRAW_FLAGS_MANIFOLD;
 
 		PhysicsEngine::Instance()->SetDebugDrawFlags(drawFlags);
-
 	}
 };

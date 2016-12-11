@@ -40,12 +40,23 @@ public:
 	//Sphere
 	static Mesh* Sphere()			{ return m_pSphere; }
 
+	static Mesh* Raptor()			{ return m_pRaptor; }
+
 
 
 	//PhysicsEngine Checkerboard - Hidden here for reasons of laziness
 	static GLuint CheckerboardTex() { return m_CheckerboardTex; }
 
-
+	//set my Planet texture
+	static GLuint PlanetTex() { return m_Planet; }
+	//set my ball texture
+	static GLuint BallTex()   { return m_Ball; }
+	//set my box texture
+	static GLuint BoxTex()    { return m_Box; }
+	//set my target texture
+	static GLuint TargetTex() { return m_Target; }
+	//get raptor texture
+	static GLuint RaptorTex() { return m_Raptor; }
 protected:
 	//Called by SceneRenderer
 	static void InitializeMeshes();
@@ -55,7 +66,12 @@ protected:
 	static Mesh* m_pCube;
 	static Mesh* m_pSphere;
 	static Mesh* m_pPlane;
-
+	static Mesh* m_pRaptor;
 
 	static GLuint m_CheckerboardTex;
+	static GLuint m_Planet;// My planet texture
+	static GLuint m_Ball;  // Ball texture
+	static GLuint m_Box;   // Box texture
+	static GLuint m_Target;// target texture
+	static GLuint m_Raptor;// raptor texture
 };

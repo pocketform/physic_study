@@ -71,7 +71,7 @@ struct CollisionPair	//Forms the output of the broadphase collision detection
 
 class PhysicsEngine : public TSingleton<PhysicsEngine>
 {
-	friend class TSingleton < PhysicsEngine > ;
+	friend class TSingleton < PhysicsEngine >;
 public:
 	//Reset Default Values like gravity/timestep - called when scene is switched out
 	void SetDefaults();
@@ -141,7 +141,7 @@ protected:
 	float		m_DampingFactor;
 
 
-	std::vector<CollisionPair> m_BroadphaseCollisionPairs;
+	std::vector<CollisionPair>  m_BroadphaseCollisionPairs;
 
 	std::vector<PhysicsObject*> m_PhysicsObjects;
 

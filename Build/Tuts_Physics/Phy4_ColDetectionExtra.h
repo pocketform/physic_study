@@ -134,17 +134,15 @@ public:
 			false,
 			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
-
 		//Create Player
 		ObjectPlayer* player = new ObjectPlayer("Player1");
 		player->SetMesh(m_MeshPlayer, false);
 		player->CreatePhysicsNode();
 		player->Physics()->SetPosition(Vector3(0.0f, 0.5f, 0.0f));
-		player->Physics()->SetCollisionShape(new CuboidCollisionShape(Vector3(0.5f, 0.5f, 1.0f)));
+		player->Physics()->SetCollisionShape(new CuboidCollisionShape(Vector3(0.3f, 0.3f, 1.0f)));
 		player->SetBoundingRadius(1.0f);
 		player->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		this->AddGameObject(player);
-
 
 		//Create Some Objects
 		{
@@ -158,7 +156,6 @@ public:
 			obj->CreatePhysicsNode();
 			obj->Physics()->SetPosition(Vector3(-5.0f, 2.f, -5.0f));
 			obj->Physics()->SetCollisionShape(new CuboidCollisionShape(col_size));
-
 
 
 			obj->Physics()->SetOnCollisionCallback([](PhysicsObject* self, PhysicsObject* collidingObject) {
@@ -238,6 +235,6 @@ public:
 
 private:
 	OBJMesh *m_MeshHouse, *m_MeshGarden;
-	GLuint	m_whiteTexture;
-	OBJMesh* m_MeshPlayer;
+	GLuint	 m_whiteTexture;
+	OBJMesh *m_MeshPlayer;
 };

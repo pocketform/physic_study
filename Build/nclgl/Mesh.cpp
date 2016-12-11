@@ -188,10 +188,10 @@ Mesh* Mesh::GenerateQuadTexCoordCol(Vector2 scale, Vector2 texCoord, Vector4 col
 	m->normals			= new Vector3[m->numVertices];
 	m->tangents			= new Vector3[m->numVertices];
 
-	m->vertices[0] = 	Vector3(0.0f, 0.0f, 0.0f);
-	m->vertices[1] = 	Vector3(0.0f, scale.y, 0.0f);
-	m->vertices[2] = 	Vector3(scale.x, 0.0f, 0.0f);
-	m->vertices[3] = 	Vector3(scale.x,  scale.y, 0.0f);
+	m->vertices[0]      = Vector3(0.0f, 0.0f, 0.0f);
+	m->vertices[1]      = Vector3(0.0f, scale.y, 0.0f);
+	m->vertices[2]      = Vector3(scale.x, 0.0f, 0.0f);
+	m->vertices[3]      = Vector3(scale.x,  scale.y, 0.0f);
 
 	m->textureCoords[0] = Vector2(texCoord.x,	texCoord.x);
 	m->textureCoords[1] = Vector2(texCoord.x,	texCoord.y);
@@ -199,8 +199,8 @@ Mesh* Mesh::GenerateQuadTexCoordCol(Vector2 scale, Vector2 texCoord, Vector4 col
 	m->textureCoords[3] = Vector2(texCoord.y,	texCoord.y);
 
 	for(int i = 0; i < 4; ++i) {
-		m->colours[i] = colour;
-		m->normals[i] = Vector3(0.0f, 0.0f,-1.0f);
+		m->colours[i]  = colour;
+		m->normals[i]  = Vector3(0.0f, 0.0f,-1.0f);
 		m->tangents[i] = Vector3(1.0f, 0.0f,0.0f);
 	}
 

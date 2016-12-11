@@ -40,17 +40,25 @@ void TestScene::OnInitializeScene()
 
 //<--- SCENE CREATION --->
 	//Create Ground
-	this->AddGameObject(BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+	this->AddGameObject(BuildCuboidObject(
+		"Ground", 
+		Vector3(0.0f, -1.0f, 0.0f), 
+		Vector3(20.0f, 1.0f, 20.0f), 
+		true, 
+		0.0f, 
+		true, 
+		false, 
+		Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
 	//Create Player (See OnUpdateScene)
 	m_pPlayer = BuildCuboidObject(
-		"Player1",					// Optional: Name
-		Vector3(5.f, 0.5f, 0.0f),	// Position
-		Vector3(0.5f, 0.5f, 1.0f),  // Half-Dimensions
-		true,						// Physics Enabled?
-		0.f,						// Physical Mass (must have physics enabled)
-		false,						// Physically Collidable (has collision shape)
-		false,						// Dragable by user?
+		"Player1",					      // Optional: Name
+		Vector3(5.f, 0.5f, 0.0f),	      // Position
+		Vector3(0.5f, 0.5f, 1.0f),        // Half-Dimensions
+		true,						      // Physics Enabled?
+		0.f,						      // Physical Mass (must have physics enabled)
+		true,						      // Physically Collidable (has collision shape)
+		false,						      // Dragable by user?
 		Vector4(0.1f, 0.1f, 0.1f, 1.0f)); // Render colour
 	this->AddGameObject(m_pPlayer);
 
@@ -70,9 +78,9 @@ void TestScene::OnInitializeScene()
 					"",						// Optional: Name
 					pos,					// Position
 					halfdims,				// Half-Dimensions
-					false,					// Physics Enabled?
-					0.f,					// Physical Mass (must have physics enabled)
-					false,					// Physically Collidable (has collision shape)
+					true,					// Physics Enabled?
+					1.f,					// Physical Mass (must have physics enabled)
+					true,					// Physically Collidable (has collision shape)
 					true,					// Dragable by user?
 					colour);				// Render colour
 				this->AddGameObject(cube);
@@ -80,7 +88,7 @@ void TestScene::OnInitializeScene()
 		}
 	};
 
-	auto create_ball_cube = [&](const Vector3& offset, const Vector3& scale, float ballsize)
+	auto create_ball_cube  = [&](const Vector3& offset, const Vector3& scale, float ballsize)
 	{
 		const int dims = 10;
 		const Vector4 col = Vector4(1.0f, 0.5f, 0.2f, 1.0f);
@@ -97,8 +105,8 @@ void TestScene::OnInitializeScene()
 						pos,				// Position
 						ballsize,			// Half-Dimensions
 						false,				// Physics Enabled?
-						0.f,				// Physical Mass (must have physics enabled)
-						false,				// Physically Collidable (has collision shape)
+						1.f,				// Physical Mass (must have physics enabled)
+						true,				// Physically Collidable (has collision shape)
 						false,				// Dragable by user?
 						col);// Render colour
 					this->AddGameObject(sphere);
@@ -108,14 +116,14 @@ void TestScene::OnInitializeScene()
 	};
 
 	//Create Cube Towers
-	create_cube_tower(Vector3(3.0f, 0.5f, 3.0f), 1.0f);
+	create_cube_tower(Vector3( 3.0f, 0.5f,  3.0f), 1.0f);
 	create_cube_tower(Vector3(-3.0f, 0.5f, -3.0f), 1.0f);
 
 	//Create Test Ball Pit
-	create_ball_cube(Vector3(-8.0f, 0.5f, 12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
-	create_ball_cube(Vector3(8.0f, 0.5f, 12.0f), Vector3(0.3f, 0.3f, 0.3f), 0.1f);
+	create_ball_cube(Vector3(-8.0f, 0.5f,  12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
+	create_ball_cube(Vector3( 8.0f, 0.5f,  12.0f), Vector3(0.3f, 0.3f, 0.3f), 0.1f);
 	create_ball_cube(Vector3(-8.0f, 0.5f, -12.0f), Vector3(0.2f, 0.2f, 0.2f), 0.1f);
-	create_ball_cube(Vector3(8.0f, 0.5f, -12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
+	create_ball_cube(Vector3( 8.0f, 0.5f, -12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
 }
 
 void TestScene::OnCleanupScene()
@@ -146,7 +154,7 @@ void TestScene::OnUpdateScene(float dt)
 
 	//Or move our car around the scene..
 	{
-		const float mv_speed = 10.f * dt;			//Motion: Meters per second
+		const float mv_speed  = 10.f * dt;			//Motion: Meters per second
 		const float rot_speed = 90.f * dt;			//Rotation: Degrees per second
 
 		bool boosted = false;

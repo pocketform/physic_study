@@ -77,8 +77,8 @@ public:
 	bool m_Rotating;
 
 	const Vector3 ss_pos = Vector3(-5.5f, 1.5f, -5.0f);
-	const Vector3 sc_pos = Vector3(4.5f, 1.5f, -5.0f);
-	const Vector3 cc_pos = Vector3(-0.5f, 1.5f, 5.0f);
+	const Vector3 sc_pos = Vector3( 4.5f, 1.5f, -5.0f);
+	const Vector3 cc_pos = Vector3(-0.5f, 1.5f,  5.0f);
 
 	//for check colliction 
 	//bool cube_colliding = false;
@@ -168,7 +168,6 @@ public:
 
 		//Create Cuboid-Cuboid Manifold Test
 		{
-
 			Object* cuboid = CommonUtils::BuildCuboidObject("rotating_cuboid1",
 				cc_pos + Vector3(0.75f, 0.0f, 0.0f),	//Position leading to 0.25 meter overlap on faces, and more on diagonals
 				Vector3(0.5f, 0.5f, 0.5f),				//Half dimensions
@@ -220,7 +219,7 @@ public:
 				);
 
 			//Default Colour (not colliding)
-			Vector4 beforeCol = CommonUtils::GenColour(0.3f, 0.5f);
+			Vector4 beforeCol  = CommonUtils::GenColour(0.3f, 0.5f);
 			Vector4 collideCol = CommonUtils::GenColour(0.7f, 0.3f);
 
 
@@ -277,6 +276,7 @@ public:
 				//cube_colliding = false;//set back the collision check 
 			}
 
+			//chang the color when collided
 			if (rotating_cuboid1->Physics()->IsColliding())
 			{
 				rotating_cuboid1->SetColour(collideCol);

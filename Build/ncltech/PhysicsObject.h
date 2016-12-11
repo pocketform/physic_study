@@ -51,7 +51,6 @@ public:
 
 	//<--------- GETTERS ------------->
 	inline bool					IsEnabled()					const 	{ return m_Enabled; }
-	inline bool					IsColliding()				const   { return m_isCollide; }//set bool to check collision
 
 	inline float				GetElasticity()				const 	{ return m_Elasticity; }
 	inline float				GetFriction()				const 	{ return m_Friction; }
@@ -71,12 +70,18 @@ public:
 	inline Object*				GetAssociatedObject()		const	{ return m_pParent; }
 
 	const Matrix4&				GetWorldSpaceTransform()    const;	//Built from scratch or returned from cached value
-
+	//<--------- GETTERS_MO ------------->
+	inline bool					IsColliding()				const   { return m_isCollide; } //get bool to check collision
+	inline bool			        Get_Rest_State()			const   { return m_Rest_State;} //get bool to check rest
+	inline bool					IsInCourseWork()			const	{ return m_CoursWork; } //get bool to check in coursework or not
+	inline bool					GetCanScore()				const   { return m_CanScore; }  //get bool to check can I add score
+	inline bool					GetDoScore()				const   { return m_DoScore; }   //get bool to add score
+	inline int					GetScore()					const   { return m_score; }     //get the score when collide
 
 
 	//<--------- SETTERS ------------->
 	inline void SetElasticity(float elasticity)						{ m_Elasticity = elasticity; }
-	inline void SetFriction(float friction)							{ m_Friction = friction; }
+	inline void SetFriction(float friction)							{ m_Friction   = friction; }
 
 	inline void SetPosition(const Vector3& v)						{ m_Position = v;	m_wsTransformInvalidated = true; }
 	inline void SetLinearVelocity(const Vector3& v)					{ m_LinearVelocity = v; }
@@ -89,7 +94,12 @@ public:
 	inline void SetInverseInertia(const Matrix3& v)					{ m_InvInertia = v; }
 
 	inline void SetCollisionShape(CollisionShape* colShape)			{ m_pColShape = colShape; }
-	
+	//<--------- SETTERS_MO ------------->
+	inline void SetRestState(bool rest)								{ m_Rest_State = rest; }			//set rest state
+	inline void SetInCourseWork(bool incoursework)					{ m_CoursWork = incoursework; }		//set in coursework state
+	inline void SetCanScore(bool getscore)							{ m_CanScore = getscore; }			//set state of can I get score
+	inline void SetDoScore(bool doscore)							{ m_DoScore = doscore; }			//set state of get score
+	inline void SetScore(int score)									{ m_score = score; }				//set score when collide
 
 
 	//Called automatically when PhysicsObject is created through Object::CreatePhysicsNode()
@@ -106,7 +116,7 @@ public:
 protected:
 	Object*				m_pParent;			//Optional: Attached GameObject or NULL if none set
 	bool				m_Enabled;
-	bool				m_isCollide;		//detecte wether its colliding or not
+
 
 	mutable bool		m_wsTransformInvalidated;
 	mutable Matrix4		m_wsTransform;
@@ -129,4 +139,12 @@ protected:
 	//<----------COLLISION------------>
 	CollisionShape*				m_pColShape;
 	PhysicsCollisionCallback	m_OnCollisionCallback;
+
+	//<----------MO------------>
+	bool				m_isCollide;		//detect whether its colliding or not
+	bool                m_Rest_State;       //detect whether its rest or wake up
+	bool                m_CoursWork;        //detect whether in my coursework
+	bool				m_CanScore;			//detect can I get score
+	bool				m_DoScore;			//detect to get score
+	int					m_score;			//get scores when collide with target
 };

@@ -145,13 +145,78 @@ void PhysicsEngine::SolveConstraints()
 
 void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 {
-	//gravity
-	if (obj->m_InvMass > 0.0f)
-	{
-		obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
-	}
 
-	//semi-implicit (linear displacement)
+	if (obj->m_CoursWork == true)
+	{
+		//gravity
+		Vector3 g = obj->GetPosition() - Vector3(0, 0, 0)/*the position of planet*/;
+		g.Normalise();
+		m_Gravity = g * (-9.81f); //set the gracity of planet
+
+		if (obj->m_InvMass > 0.0f)
+		{
+			obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
+		}
+
+		if (obj->m_Rest_State == true)
+		{
+			obj->m_LinearVelocity = Vector3(0.0f, 0.0f, 0.0f);
+			obj->m_AngularVelocity = Vector3(0.0f, 0.0f, 0.0f);
+		}
+
+		//semi-implicit (linear displacement)
+		////1. velocity in next time step
+		//obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
+		//obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
+		////2. position in next time step
+		//obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
+		//
+		////semi-implicit (angular displacement)
+		////1. velocity
+		//obj->m_AngularVelocity += obj->m_InvInertia * obj->m_Torque * m_UpdateTimestep;
+		//obj->m_AngularVelocity = obj->m_AngularVelocity * m_DampingFactor;
+		////2. position
+		//obj->m_Orientation = obj->m_Orientation + obj->m_Orientation * (obj->m_AngularVelocity * m_UpdateTimestep * 0.5f);
+		//obj->m_Orientation.Normalise();
+
+		//Midpoint Method
+		Vector3 tempVelocity;
+		tempVelocity = obj->m_LinearVelocity;
+		//1. velocity in next time step
+		obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
+		obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
+		//2. position in next time step
+		//obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
+		obj->m_Position += (obj->m_LinearVelocity + tempVelocity) * m_UpdateTimestep *0.5;
+
+		//Midpoint Method (angular displacement)
+		tempVelocity = obj->m_AngularVelocity;
+		//1. velocity
+		obj->m_AngularVelocity += obj->m_InvInertia * obj->m_Torque * m_UpdateTimestep;
+		obj->m_AngularVelocity = obj->m_AngularVelocity  * m_DampingFactor;
+		//2. position
+		obj->m_Orientation = obj->m_Orientation + obj->m_Orientation * ((obj->m_AngularVelocity + tempVelocity) * m_UpdateTimestep * 0.5f);
+		//obj->m_Orientation = obj->m_Orientation + obj->m_Orientation * ((obj->m_AngularVelocity + tempVelocity) * m_UpdateTimestep * 0.5f);
+		obj->m_Orientation.Normalise();
+
+		obj->m_wsTransformInvalidated = true;
+	}
+	
+	else
+	{
+		//gravity
+		if (obj->m_InvMass > 0.0f)
+		{
+			obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
+		}
+
+		if (obj->m_Rest_State == true)
+		{
+			obj->m_LinearVelocity  = Vector3(0.0f, 0.0f, 0.0f);
+			obj->m_AngularVelocity = Vector3(0.0f, 0.0f, 0.0f);
+		}
+
+		//semi-implicit (linear displacement)
 	////1. velocity in next time step
 	//obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
 	//obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
@@ -166,28 +231,29 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 	//obj->m_Orientation = obj->m_Orientation + obj->m_Orientation * (obj->m_AngularVelocity * m_UpdateTimestep * 0.5f);
 	//obj->m_Orientation.Normalise();
 
+		//Midpoint Method
+		Vector3 tempVelocity;
+		tempVelocity = obj->m_LinearVelocity;
+		//1. velocity in next time step
+		obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
+		obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
+		//2. position in next time step
+		//obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
+		obj->m_Position += (obj->m_LinearVelocity + tempVelocity) * m_UpdateTimestep *0.5;
 
-	//Midpoint Method
-	Vector3 tempVelocity;
-	tempVelocity = obj->m_LinearVelocity;
-	//1. velocity in next time step
-	obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
-	obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
-	//2. position in next time step
-	//obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
-	obj->m_Position += (obj->m_LinearVelocity + tempVelocity) * m_UpdateTimestep *0.5;
+		//Midpoint Method (angular displacement)
+		tempVelocity = obj->m_AngularVelocity;
+		//1. velocity
+		obj->m_AngularVelocity += obj->m_InvInertia * obj->m_Torque * m_UpdateTimestep;
+		obj->m_AngularVelocity = obj->m_AngularVelocity  * m_DampingFactor;
+		//2. position
+		obj->m_Orientation = obj->m_Orientation + obj->m_Orientation * ((obj->m_AngularVelocity + tempVelocity) * m_UpdateTimestep * 0.5f);
+		//obj->m_Orientation = obj->m_Orientation + obj->m_Orientation * ((obj->m_AngularVelocity + tempVelocity) * m_UpdateTimestep * 0.5f);
+		obj->m_Orientation.Normalise();
 
-	//Midpoint Method (angular displacement)
-	tempVelocity = obj->m_AngularVelocity;
-	//1. velocity
-	obj->m_AngularVelocity += obj->m_InvInertia * obj->m_Torque * m_UpdateTimestep;
-	obj->m_AngularVelocity = obj->m_AngularVelocity * m_DampingFactor;
-	//2. position
-	obj->m_Orientation = obj->m_Orientation + obj->m_Orientation * (obj->m_AngularVelocity * m_UpdateTimestep * 0.5f);
-	//obj->m_Orientation = obj->m_Orientation + obj->m_Orientation * ((obj->m_AngularVelocity + tempVelocity) * m_UpdateTimestep * 0.5f);
-	obj->m_Orientation.Normalise();
+		obj->m_wsTransformInvalidated = true;
+	}
 
-	obj->m_wsTransformInvalidated = true;
 }
 
 
@@ -214,6 +280,7 @@ void PhysicsEngine::BroadPhaseCollisions()
 				m_pObj2 = m_PhysicsObjects[j];
 
 				//Check they both atleast have collision shapes
+
 				if (m_pObj1->GetCollisionShape() != NULL
 					&& m_pObj2->GetCollisionShape() != NULL)
 				{
@@ -226,10 +293,12 @@ void PhysicsEngine::BroadPhaseCollisions()
 		}
 	}
 
-	//reset the state of the collision
+	//reset the state of the collision and the state of doscore
 	for (auto* obj : m_PhysicsObjects)
 	{
 		obj->m_isCollide = false;
+		obj->m_DoScore	 = false;
+		obj->m_score     = 0;
 	}
 }
 
@@ -262,8 +331,11 @@ void PhysicsEngine::NarrowPhaseCollisions()
 			// Detects if the objects are colliding - Seperating Axis Theorem
 			if (colDetect.AreColliding(&colData))
 			{
-				cp.pObjectA->m_isCollide = true;//get the collision information
-				cp.pObjectB->m_isCollide = true;//get the collision information
+				{
+					cp.pObjectA->m_isCollide = true;//get the collision information
+					cp.pObjectB->m_isCollide = true;//get the collision information
+				}//changed by mo
+
 				//Draw collision data to the window if requested
 				// - Have to do this here as colData is only temporary. 
 				if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS)
@@ -278,7 +350,44 @@ void PhysicsEngine::NarrowPhaseCollisions()
 
 				if (okA && okB)
 				{
+					{
+						if ((cp.pObjectA->Get_Rest_State() == false) || (cp.pObjectB->Get_Rest_State() == false))
+						{
+							cp.pObjectA->m_Rest_State = false;
+							cp.pObjectB->m_Rest_State = false;
+						}// set tow object out of rest state
 
+						if ((cp.pObjectA->GetCanScore() == true) && (cp.pObjectB->GetCanScore() == true))
+						{
+							cp.pObjectA->m_DoScore = true;
+							cp.pObjectB->m_DoScore = true;
+
+							Vector3 position_A = cp.pObjectA->GetPosition();
+							Vector3 position_B = cp.pObjectB->GetPosition();
+
+							if (abs(position_A.Length() - position_B.Length()) <= 0.2f )
+							{
+								cp.pObjectA -> m_score = 100;
+								cp.pObjectB -> m_score = 100;
+							}
+							else if (abs(position_A.Length() - position_B.Length()) <= 0.4f)
+							{
+								cp.pObjectA->m_score = 50;
+								cp.pObjectB->m_score = 50;
+							}
+							else if (abs(position_A.Length() - position_B.Length()) <= 0.6f)
+							{
+								cp.pObjectA->m_score = 30;
+								cp.pObjectB->m_score = 30;
+							}
+							else
+							{
+								cp.pObjectA->m_score = 10;
+								cp.pObjectB->m_score = 10;
+							}
+						}
+
+					}// changed by mo
 
 					//-- TUTORIAL 5 CODE --
 
@@ -294,7 +403,6 @@ void PhysicsEngine::NarrowPhaseCollisions()
 				}
 			}
 		}
-
 	}
 }
 

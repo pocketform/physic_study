@@ -6,6 +6,7 @@
 
 #include "TestScene.h"
 #include "EmptyScene.h"
+#include "Planet.h"
 
 const Vector4 status_colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 const Vector4 status_colour_header = Vector4(0.8f, 0.9f, 1.0f, 1.0f);
@@ -54,7 +55,8 @@ void Initialize()
 	//Enqueue All Scenes
 	SceneManager::Instance()->EnqueueScene(new TestScene("GameTech #1 - Framework Sandbox!"));
 	SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #2 - Peace and quiet"));
-	SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #3 - More peace and quiet"));
+	//SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #3 - More peace and quiet"));
+	SceneManager::Instance()->EnqueueScene(new Planet("GameTech #3 - Planet"));
 }
 
 // Print Debug Info
@@ -80,10 +82,10 @@ void PrintStatusEntries()
 	NCLDebug::AddStatusEntry(status_colour, "     FPS: %5.2f  (Press G for %s info)", 1000.f / timer_total.GetAvg(), show_perf_metrics ? "less" : "more");
 	if (show_perf_metrics)
 	{
-		timer_total.PrintOutputToStatusEntry(status_colour, "          Total Time     :");
-		timer_update.PrintOutputToStatusEntry(status_colour, "          Scene Update   :");
+		timer_total.PrintOutputToStatusEntry(status_colour,   "          Total Time     :");
+		timer_update.PrintOutputToStatusEntry(status_colour,  "          Scene Update   :");
 		timer_physics.PrintOutputToStatusEntry(status_colour, "          Physics Update :");
-		timer_render.PrintOutputToStatusEntry(status_colour, "          Render Scene   :");
+		timer_render.PrintOutputToStatusEntry(status_colour,  "          Render Scene   :");
 	}
 	NCLDebug::AddStatusEntry(status_colour, "");
 }
@@ -126,7 +128,8 @@ int main()
 	Window::GetWindow().GetTimer()->GetTimedMS();
 
 	//Create main game-loop
-	while (Window::GetWindow().UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {
+	while (
+		(Window::GetWindow().UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_X))) {
 		//Start Timing
 		float dt = Window::GetWindow().GetTimer()->GetTimedMS() * 0.001f;	//How many milliseconds since last update?
 		timer_total.BeginTimingSection();
