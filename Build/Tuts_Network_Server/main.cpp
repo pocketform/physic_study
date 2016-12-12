@@ -95,18 +95,18 @@ int main(int arcg, char** argv)
 		{
 			switch (evnt.type)
 			{
-			case ENET_EVENT_TYPE_CONNECT:
-				printf("- New Client Connected\n");
-				break;
+				case ENET_EVENT_TYPE_CONNECT:
+					printf("- New Client Connected\n");
+					break;
 
-			case ENET_EVENT_TYPE_RECEIVE:
-				printf("\t Client %d says: %s\n", evnt.peer->incomingPeerID, evnt.packet->data);
-				enet_packet_destroy(evnt.packet);
-				break;
+				case ENET_EVENT_TYPE_RECEIVE:
+					printf("\t Client %d says: %s\n", evnt.peer->incomingPeerID, evnt.packet->data);
+					enet_packet_destroy(evnt.packet);
+					break;
 
-			case ENET_EVENT_TYPE_DISCONNECT:
-				printf("- Client %d has disconnected.\n", evnt.peer->incomingPeerID);
-				break;
+				case ENET_EVENT_TYPE_DISCONNECT:
+					printf("- Client %d has disconnected.\n", evnt.peer->incomingPeerID);
+					break;
 			}
 		});
 		

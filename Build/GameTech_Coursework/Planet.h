@@ -18,12 +18,17 @@
 class Planet : public Scene
 {
 public:
-	Planet(const std::string& friendly_name) : Scene(friendly_name) {}
+	Planet(const std::string& friendly_name) : Scene(friendly_name), m_pServerConnection(NULL){}
 	virtual ~Planet() {}
 
 	virtual void OnInitializeScene()	 override;
 	virtual void OnUpdateScene(float dt) override;
 
+	//-------< Net Work >-------//
+	virtual void OnCleanupScene() override;
+	void ProcessNetworkEvent(const ENetEvent& evnt);
+
+	//-----< Make Scence more clearlly >------//
 	void Ball_From_Camera();
 	void DrawFlags();
 	void Update_Score();
@@ -38,4 +43,9 @@ private:
 	int		num_raptor;
 
 	int     num_Score;
+
+	//-------< Net Work >-------//
+	NetworkBase m_Network;
+	ENetPeer*	m_pServerConnection;
+	bool        can_send_information;
 };
