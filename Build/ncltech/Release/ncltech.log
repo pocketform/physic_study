@@ -1,7 +1,7 @@
-﻿Build started 09/12/2016 15:48:41.
+﻿Build started 12/12/2016 17:10:36.
      1>Project "E:\physic_study\Build\ncltech\ncltech.vcxproj" on node 3 (Rebuild target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"Release\\" /Fd"Release\ncltech.pdb" /Gd /TP /analyze- /errorReport:prompt CollisionDetectionSAT.cpp CommonMeshes.cpp CommonUtils.cpp CuboidCollisionShape.cpp NetworkBase.cpp ObjectMeshDragable.cpp NCLDebug.cpp Object.cpp Hull.cpp Manifold.cpp PhysicsEngine.cpp PhysicsObject.cpp RenderList.cpp SceneManager.cpp SceneRenderer.cpp Scene.cpp ScreenPicker.cpp ObjectMesh.cpp SphereCollisionShape.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"Release\\" /Fd"Release\ncltech.pdb" /Gd /TP /analyze- /errorReport:prompt CollisionDetectionSAT.cpp CommonMeshes.cpp CommonUtils.cpp CuboidCollisionShape.cpp NetworkBase.cpp ObjectMeshDragable.cpp NCLDebug.cpp Object.cpp Hull.cpp Manifold.cpp PhysicsEngine.cpp PhysicsObject.cpp QuadCollisionSpape.cpp RenderList.cpp SceneManager.cpp SceneRenderer.cpp Scene.cpp ScreenPicker.cpp ObjectMesh.cpp SphereCollisionShape.cpp
          CollisionDetectionSAT.cpp
          CommonMeshes.cpp
          CommonUtils.cpp
@@ -14,6 +14,7 @@
          Manifold.cpp
          PhysicsEngine.cpp
          PhysicsObject.cpp
+         QuadCollisionSpape.cpp
          RenderList.cpp
          SceneManager.cpp
          SceneRenderer.cpp
@@ -34,6 +35,7 @@
          Release\Manifold.obj
          Release\PhysicsEngine.obj
          Release\PhysicsObject.obj
+         Release\QuadCollisionSpape.obj
          Release\RenderList.obj
          Release\SceneManager.obj
          Release\SceneRenderer.obj
@@ -46,4 +48,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:10.84
+Time Elapsed 00:00:11.34

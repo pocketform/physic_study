@@ -231,10 +231,10 @@ void CuboidCollisionShape::ConstructCubeHull()
 	int face6[] = { 4, 5, 1, 0 };
 
 	//Faces
-	m_CubeHull.AddFace(Vector3(0.0f, 0.0f, -1.0f), 4, face1);
-	m_CubeHull.AddFace(Vector3(0.0f, 0.0f, 1.0f), 4, face2);
-	m_CubeHull.AddFace(Vector3(0.0f, 1.0f, 0.0f), 4, face3);
-	m_CubeHull.AddFace(Vector3(0.0f, -1.0f, 0.0f), 4, face4);
-	m_CubeHull.AddFace(Vector3(1.0f, 0.0f, 0.0f), 4, face5);
-	m_CubeHull.AddFace(Vector3(-1.0f, 0.0f, 0.0f), 4, face6);
+	m_CubeHull.AddFace(Vector3( 0.0f,  0.0f, -1.0f), 4, face1);
+	m_CubeHull.AddFace(Vector3( 0.0f,  0.0f,  1.0f), 4, face2);
+	m_CubeHull.AddFace(Vector3( 0.0f,  1.0f,  0.0f), 4, face3);
+	m_CubeHull.AddFace(Vector3( 0.0f, -1.0f,  0.0f), 4, face4);
+	m_CubeHull.AddFace(Vector3( 1.0f,  0.0f,  0.0f), 4, face5);
+	m_CubeHull.AddFace(Vector3(-1.0f,  0.0f,  0.0f), 4, face6);
 }

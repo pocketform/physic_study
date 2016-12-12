@@ -6,9 +6,11 @@
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\NCLDebug.h>
+
+#include <ncltech\NetworkBase.h>//for network
+
 //#include <ncltech\DistanceConstraint.h>
 //#include <ncltech\CommonMeshes.h>
-//#include <ncltech\CommonUtils.h>
 //#include <ncltech\ObjectMesh.h>
 
 #include<sstream>

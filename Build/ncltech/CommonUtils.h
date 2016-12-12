@@ -53,6 +53,16 @@ namespace CommonUtils
 		bool dragable = true,
 		const Vector4& color = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
+	Object* Build_Quad_Object(
+		const std::string& name,
+		const Vector3& pos,
+		const Vector3& scale,
+		bool physics_enabled = false,
+		float inverse_mass = 0.0f,			//requires physics_enabled = true
+		bool collidable = true,				//requires physics_enabled = true
+		bool dragable = true,
+		const Vector4& color = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+
 	//Generates a raptor
 	Object* Build_Raptor_Object(
 		const std::string& name,

@@ -1,4 +1,6 @@
 #include <enet/enet.h>
+//#include </physic_study/Build/ExternalLibs/ENET/include/enet/enet.h>
+#include<../ENET/include/enet/enet.h>
 
 #include <nclgl\Window.h>
 #include <ncltech\PhysicsEngine.h>

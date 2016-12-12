@@ -18,7 +18,7 @@ void Planet::OnInitializeScene()
 
 	my_drawFlag = PhysicsEngine::Instance()->GetDebugDrawFlags();
 
-	my_drawFlag ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
+	// ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
 	my_drawFlag ^= DEBUGDRAW_FLAGS_COLLISIONNORMALS;
 
 	Scene::OnInitializeScene();
@@ -38,26 +38,92 @@ void Planet::OnInitializeScene()
 		planet->Physics()->SetRestState(false);
 	}//initialze the planet
 
-	this->AddGameObject(CommonUtils::BuildCuboidObject(
-		"HorizontalGround",
-		Vector3(0.0f, -15.0f, -20.0f),
-		Vector3(10.0f, 1.0f, 10.0f),
-		true,
-		0.0f,
-		true,
-		false,
-		Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+	{
 
-	this->AddGameObject(CommonUtils::BuildCuboidObject(
-		"VerticalGround",
-		Vector3(0.0f, -15.0f, -20.0f),
-		Vector3(10.0f, 10.0f, 1.0f),
-		true,
-		0.0f,
-		true,
-		false,
-		Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
-	
+		this->AddGameObject(CommonUtils::Build_Quad_Object(
+			"HorizontalGround_down",
+			Vector3(0.0f, -24.0f, 0.0f),
+			Vector3(10.0f, 10.0f, 1.0f),
+			true,
+			0.0f,
+			true,
+			false,
+			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+
+		Object* HorizontalGround_down = this->FindGameObject("HorizontalGround_down");
+		HorizontalGround_down->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(90.0f,0.0f,0.0f));
+
+
+		this->AddGameObject(CommonUtils::Build_Quad_Object(
+			"HorizontalGround_up",
+			Vector3(0.0f, -14.0f, 0.0f),
+			Vector3(10.0f, 10.0f, 1.0f),
+			true,
+			0.0f,
+			true,
+			false,
+			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+
+		Object* HorizontalGround_up = this->FindGameObject("HorizontalGround_up");
+		HorizontalGround_up->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(-90.0f, 0.0f, 0.0f));
+
+		//HorizontalGround->SetLocalTransform(Matrix4::Rotation(45.0f, Vector3(0.0f, 1.0f, 0.0f)) * HorizontalGround->GetLocalTransform());
+
+		this->AddGameObject(CommonUtils::Build_Quad_Object(
+			"VerticalGround_fron",
+			Vector3( 0.0f, -19.0f, -5.0f),
+			Vector3(10.0f,  10.0f,  1.0f),
+			true,
+			0.0f,
+			true,
+			false,
+			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+
+		Object* VerticalGround_fron = this->FindGameObject("VerticalGround_fron");
+		VerticalGround_fron->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0.0f, 180.0f, 0.0f));
+
+
+		this->AddGameObject(CommonUtils::Build_Quad_Object(
+			"VerticalGround_right",
+			Vector3( 5.0f, -19.0f, 0.0f),
+			Vector3(10.0f,  10.0f, 1.0f),
+			true,
+			0.0f,
+			true,
+			false,
+			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+
+		Object* VerticalGround_right = this->FindGameObject("VerticalGround_right");
+		VerticalGround_right->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0.0f, 90.0f, 0.0f));
+
+		this->AddGameObject(CommonUtils::Build_Quad_Object(
+			"VerticalGround_left",
+			Vector3( -5.0f, -19.0f, 0.0f),
+			Vector3( 10.0f,  10.0f, 1.0f),
+			true,
+			0.0f,
+			true,
+			false,
+			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+
+		Object* VerticalGround_left = this->FindGameObject("VerticalGround_left");
+		VerticalGround_left->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0.0f, -90.0f, 0.0f));
+		
+		this->AddGameObject(CommonUtils::Build_Quad_Object(
+			"VerticalGround_back",
+			Vector3(0.0f, -19.0f, 5.0f),
+			Vector3(10.0f, 10.0f, 0.1f),
+			true,
+			0.0f,
+			true,
+			false,
+			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+
+		Object* VerticalGround_back = this->FindGameObject("VerticalGround_back");
+		VerticalGround_back->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0.0f, 0.0f, 0.0f));
+	} //axis - aligned bounding box.
+
+
 	{
 		ostringstream question_box;
 
@@ -69,7 +135,7 @@ void Planet::OnInitializeScene()
 
 				this->AddGameObject(CommonUtils::Build_Box_CuboidObject(
 					question_box.str().c_str(),
-					Vector3((x - y * 0.5f), 3.0f + ((-1.f) + float(pyramid_stack_height - 1 - y)), 15.f),
+					Vector3((x - y * 0.5f) - 5.0f, 3.0f + ((-1.f) + float(pyramid_stack_height - 1 - y)), 20.f),
 					Vector3(0.5f, 0.5f, 0.5f),
 					true,
 					0.1f,
@@ -117,8 +183,8 @@ void Planet::OnInitializeScene()
 	{
 		this->AddGameObject(CommonUtils::Build_Raptor_Object(
 			"raptor",
-			Vector3(0.f,  9.0f, 15.f),
-			Vector3(1.0f, 1.0f, 1.0f),
+			Vector3(-5.0f,  9.0f, 20.0f),
+			Vector3( 1.0f, 1.0f,  1.0f),
 			true,
 			1.0f,
 			true,
@@ -162,6 +228,9 @@ void Planet::OnUpdateScene(float dt)
 	Object* target = this->FindGameObject("target");
 	target->Physics()->SetAngularVelocity(Vector3(0.0f, 0.1f, 0.0f));
 
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Push 'J' to throw a ball");
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), " ");
+
 	Update_Score();
 
 	DrawFlags();
@@ -184,7 +253,7 @@ void Planet::Ball_From_Camera()
 		Object* ballshoot = CommonUtils::Build_Ball_SphereObject(
 			ballshootName.str().c_str(),
 			SceneManager::Instance()->GetCamera()->GetPosition(),
-			0.2f,
+			0.5f,
 			true,
 			0.1f,
 			true,

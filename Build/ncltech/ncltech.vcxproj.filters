@@ -110,6 +110,9 @@
     <ClCompile Include="SphereCollisionShape.cpp">
       <Filter>src\Physics\CollisionShapes</Filter>
     </ClCompile>
+    <ClCompile Include="QuadCollisionSpape.cpp">
+      <Filter>src\Physics\CollisionShapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -186,6 +189,9 @@
     </ClInclude>
     <ClInclude Include="CollisionDetectionSAT.h">
       <Filter>include\Physics\CollisionDetection</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadCollisionSpape.h">
+      <Filter>include\Physics\CollisionShapes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

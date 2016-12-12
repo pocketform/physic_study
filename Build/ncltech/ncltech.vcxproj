@@ -88,6 +88,7 @@
     <ClCompile Include="Manifold.cpp" />
     <ClCompile Include="PhysicsEngine.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
+    <ClCompile Include="QuadCollisionSpape.cpp" />
     <ClCompile Include="RenderList.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneRenderer.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="ObjectMeshDragable.h" />
     <ClInclude Include="PhysicsEngine.h" />
     <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="QuadCollisionSpape.h" />
     <ClInclude Include="RenderList.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />

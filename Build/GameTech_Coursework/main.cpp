@@ -1,3 +1,7 @@
+#pragma once
+
+#include <enet/enet.h>
+
 #include <nclgl\Window.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
@@ -15,7 +19,6 @@ bool show_perf_metrics = false;
 PerfTimer timer_total, timer_physics, timer_update, timer_render;
 uint shadowCycleKey = 4;
 
-
 // Program Deconstructor
 //  - Releases all global components and memory
 //  - Optionally prints out an error message and
@@ -24,6 +27,7 @@ void Quit(bool error = false, const string &reason = "") {
 	//Release Singletons
 	SceneManager::Release();
 	PhysicsEngine::Release();
+	//enet_deinitialize();//for network
 	Window::Destroy();
 
 	//Show console reason before exit
@@ -53,8 +57,8 @@ void Initialize()
 		Quit(true, "Renderer failed to initialise!");
 
 	//Enqueue All Scenes
-	SceneManager::Instance()->EnqueueScene(new TestScene("GameTech #1 - Framework Sandbox!"));
-	SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #2 - Peace and quiet"));
+	//SceneManager::Instance()->EnqueueScene(new TestScene("GameTech #1 - Framework Sandbox!"));
+	//SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #2 - Peace and quiet"));
 	//SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #3 - More peace and quiet"));
 	SceneManager::Instance()->EnqueueScene(new Planet("GameTech #3 - Planet"));
 }
