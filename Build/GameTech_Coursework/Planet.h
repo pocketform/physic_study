@@ -48,4 +48,16 @@ private:
 	NetworkBase m_Network;
 	ENetPeer*	m_pServerConnection;
 	bool        can_send_information;
+
+	int			top01;
+	int			top02;
+	int			top03;
+	int			top04;
+	int			top05;
+	int			top06;
+	int			top07;
+	int			top08;
+	int			top09;
+	int			top10;
+	bool		score_chenged;
 };

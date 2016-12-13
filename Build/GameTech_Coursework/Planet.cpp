@@ -7,6 +7,20 @@ void Planet::OnInitializeScene()
 	num_question_box = 0;
 	num_raptor       = 0;
 	num_Score        = 0;
+
+	top01			 = 0;
+	top02			 = 0;
+	top03			 = 0;
+	top04			 = 0;
+	top05			 = 0;
+	top06			 = 0;
+	top07			 = 0;
+	top08			 = 0;
+	top09			 = 0;
+	top10			 = 0;
+
+	score_chenged    = false;
+
 	const int pyramid_stack_height = 7;
 
 	SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.f, 0.0f, 40.0f));
@@ -272,10 +286,89 @@ void Planet::OnUpdateScene(float dt)
 	if (target->Physics()->GetDoScore() == true)
 	{
 		can_send_information = true;
+
+		if (target->Physics()->GetScore() > top01)
+		{
+			top01 = target->Physics()->GetScore();
+			score_chenged = true;
+		}
+		else if (target->Physics()->GetScore() <= top01)
+		{
+			if (target->Physics()->GetScore() > top02)
+			{
+				top02 = target->Physics()->GetScore();
+				score_chenged = true;
+			}
+			else if (target->Physics()->GetScore() <= top02)
+			{
+				if (target->Physics()->GetScore() > top03)
+				{
+					top03 = target->Physics()->GetScore();
+					score_chenged = true;
+				}
+				else if (target->Physics()->GetScore() <= top03)
+				{
+					if (target->Physics()->GetScore() > top04)
+					{
+						top04 = target->Physics()->GetScore();
+						score_chenged = true;
+					}
+					else if (target->Physics()->GetScore() <= top04)
+					{
+						if (target->Physics()->GetScore() > top05)
+						{
+							top05 = target->Physics()->GetScore();
+							score_chenged = true;
+						}
+						else if (target->Physics()->GetScore() <= top05)
+						{
+							if (target->Physics()->GetScore() > top06)
+							{
+								top06 = target->Physics()->GetScore();
+								score_chenged = true;
+							}
+							else if (target->Physics()->GetScore() <= top06)
+							{
+								if (target->Physics()->GetScore() > top07)
+								{
+									top07 = target->Physics()->GetScore();
+									score_chenged = true;
+								}
+								else if (target->Physics()->GetScore() <= top07)
+								{
+									if (target->Physics()->GetScore() > top08)
+									{
+										top08 = target->Physics()->GetScore();
+										score_chenged = true;
+									}
+									else if (target->Physics()->GetScore() <= top08)
+									{
+										if (target->Physics()->GetScore() > top09)
+										{
+											top09 = target->Physics()->GetScore();
+											score_chenged = true;
+										}
+										else if (target->Physics()->GetScore() <= top09)
+										{
+											if (target->Physics()->GetScore() > top10)
+											{
+												top10 = target->Physics()->GetScore();
+												score_chenged = true;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	else
 	{
 		can_send_information = false;
+		score_chenged		 = false;
 	}
 
 	//Update Network
@@ -285,7 +378,66 @@ void Planet::OnUpdateScene(float dt)
 		std::placeholders::_1);				// Where to place the first parameter
 	m_Network.ServiceNetwork(dt, callback);
 
+	if (this->can_send_information == true)
+	{
+		char* text_data = "you get a score!";
+		ENetPacket* packet = enet_packet_create(text_data, strlen(text_data) + 1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(m_pServerConnection, 0, packet);
+	}
 
+	if (this->score_chenged == true)
+	{
+		ostringstream text_top01;
+		text_top01 << "Top 01 is " << top01;
+		ENetPacket* packet01 = enet_packet_create(text_top01.str().c_str(), strlen(text_top01.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(m_pServerConnection, 0, packet01);
+
+
+		ostringstream text_top02;
+		text_top02 << "Top 02 is " << top02;
+		ENetPacket* packet02 = enet_packet_create(text_top02.str().c_str(), strlen(text_top02.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(m_pServerConnection, 0, packet02);
+
+		ostringstream text_top03;
+		text_top03 << "Top 03 is " << top03;
+		ENetPacket* packet03 = enet_packet_create(text_top03.str().c_str(), strlen(text_top03.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(m_pServerConnection, 0, packet03);
+
+		ostringstream text_top04;
+		text_top04 << "Top 04 is " << top04;
+		ENetPacket* packet04 = enet_packet_create(text_top04.str().c_str(), strlen(text_top04.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(m_pServerConnection, 0, packet04);
+
+		ostringstream text_top05;
+		text_top05 << "Top 05 is " << top05;
+		ENetPacket* packet05 = enet_packet_create(text_top05.str().c_str(), strlen(text_top05.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(m_pServerConnection, 0, packet05);
+
+		ostringstream text_top06;
+		text_top06 << "Top 06 is " << top06;
+		ENetPacket* packet06 = enet_packet_create(text_top06.str().c_str(), strlen(text_top06.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(m_pServerConnection, 0, packet06);
+
+		ostringstream text_top07;
+		text_top07 << "Top 07 is " << top07;
+		ENetPacket* packet07 = enet_packet_create(text_top07.str().c_str(), strlen(text_top07.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(m_pServerConnection, 0, packet07);
+
+		ostringstream text_top08;
+		text_top08 << "Top 08 is " << top08;
+		ENetPacket* packet08 = enet_packet_create(text_top08.str().c_str(), strlen(text_top08.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(m_pServerConnection, 0, packet08);
+
+		ostringstream text_top09;
+		text_top09 << "Top 09 is " << top09;
+		ENetPacket* packet09 = enet_packet_create(text_top09.str().c_str(), strlen(text_top09.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(m_pServerConnection, 0, packet09);
+
+		ostringstream text_top10;
+		text_top10 << "Top 10 is " << top10;
+		ENetPacket* packet10 = enet_packet_create(text_top10.str().c_str(), strlen(text_top10.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(m_pServerConnection, 0, packet10);
+	}
 
 	//Add Debug Information to screen
 	uint8_t ip1 = m_pServerConnection->address.host & 0xFF;
@@ -380,12 +532,29 @@ void Planet::OnCleanupScene()
 
 void Planet::ProcessNetworkEvent(const ENetEvent& evnt)
 {
-	if (this->can_send_information == true)
-	{
-		char* text_data = "you get a score!";
-		ENetPacket* packet = enet_packet_create(text_data, strlen(text_data) + 1, 0);
-		enet_peer_send(m_pServerConnection, 0, packet);
-	}
+	Object* target = this->FindGameObject("target");
+
+	//if (this->can_send_information == true)
+	//{
+	//	char* text_data = "you get a score!";
+	//	ENetPacket* packet = enet_packet_create(text_data, strlen(text_data) + 1, ENET_PACKET_FLAG_RELIABLE);
+	//	enet_peer_send(m_pServerConnection, 0, packet);
+	//}
+
+	//if (this->score_chenged == true)
+	//{
+	//	ostringstream text_top01;
+	//	text_top01 << "Top 01 is " << target->Physics()->GetScore();
+	//	ENetPacket* packet = enet_packet_create(text_top01.str().c_str(), strlen(text_top01.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+	//	enet_peer_send(m_pServerConnection, 0, packet);
+
+
+	//	//ostringstream text_top02;
+	//	//text_top02 << "Top 02 is " << target->Physics()->GetScore();
+	//	//ENetPacket* packet02 = enet_packet_create(text_top02.str().c_str(), strlen(text_top02.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+	//	//enet_peer_send(m_pServerConnection, 0, packet02);
+
+	//}
 
 	switch (evnt.type)
 	{

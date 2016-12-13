@@ -104,7 +104,7 @@ void TestScene::OnInitializeScene()
 						"",					// Optional: Name
 						pos,				// Position
 						ballsize,			// Half-Dimensions
-						false,				// Physics Enabled?
+						true,				// Physics Enabled?
 						1.f,				// Physical Mass (must have physics enabled)
 						true,				// Physically Collidable (has collision shape)
 						false,				// Dragable by user?
