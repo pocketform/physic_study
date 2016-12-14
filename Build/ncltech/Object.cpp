@@ -9,6 +9,7 @@ Object::Object(const std::string& name)
 	, m_BoundingRadius(1.0f)
 	, m_FrustumCullFlags(NULL)
 	, m_pPhysicsObject(NULL)
+	, m_change_colour(1.0f)
 {
 	m_LocalTransform.ToIdentity();
 	m_WorldTransform.ToIdentity();

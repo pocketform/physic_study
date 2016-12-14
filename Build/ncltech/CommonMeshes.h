@@ -48,15 +48,17 @@ public:
 	static GLuint CheckerboardTex() { return m_CheckerboardTex; }
 
 	//set my Planet texture
-	static GLuint PlanetTex() { return m_Planet; }
-	//set my ball texture
-	static GLuint BallTex()   { return m_Ball; }
-	//set my box texture
-	static GLuint BoxTex()    { return m_Box; }
-	//set my target texture
-	static GLuint TargetTex() { return m_Target; }
-	//get raptor texture
-	static GLuint RaptorTex() { return m_Raptor; }
+	static GLuint PlanetTex()    { return m_Planet; }
+	//set my ball texture	     
+	static GLuint BallTex()      { return m_Ball; }
+	//set my box texture	     
+	static GLuint BoxTex()       { return m_Box; }
+	//set my target texture	     
+	static GLuint TargetTex()    { return m_Target; }
+	//get raptor texture	     
+	static GLuint RaptorTex()    { return m_Raptor; }
+	//get atmospher texture
+	static GLuint AtmospherTex() { return m_atmospher; }
 protected:
 	//Called by SceneRenderer
 	static void InitializeMeshes();
@@ -69,9 +71,10 @@ protected:
 	static Mesh* m_pRaptor;
 
 	static GLuint m_CheckerboardTex;
-	static GLuint m_Planet;// My planet texture
-	static GLuint m_Ball;  // Ball texture
-	static GLuint m_Box;   // Box texture
-	static GLuint m_Target;// target texture
-	static GLuint m_Raptor;// raptor texture
+	static GLuint m_Planet;     // My planet texture
+	static GLuint m_Ball;       // Ball		 texture
+	static GLuint m_Box;        // Box		 texture
+	static GLuint m_Target;     // target	 texture
+	static GLuint m_Raptor;     // raptor	 texture
+	static GLuint m_atmospher;  // atmospher texture
 };

@@ -12,16 +12,18 @@ GLuint CommonMeshes::m_Ball            = 0;
 GLuint CommonMeshes::m_Box             = 0;
 GLuint CommonMeshes::m_Target          = 0;
 GLuint CommonMeshes::m_Raptor          = 0;
+GLuint CommonMeshes::m_atmospher       = 0;
 
 void CommonMeshes::InitializeMeshes()
 {
 	if (m_pPlane == NULL)
 	{
 		m_Planet          = SOIL_load_OGL_texture(TEXTUREDIR"planet.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+		m_atmospher		  = SOIL_load_OGL_texture(TEXTUREDIR"Clouds.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 		m_Ball			  = SOIL_load_OGL_texture(TEXTUREDIR"ball.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 		m_Box             = SOIL_load_OGL_texture(TEXTUREDIR"box.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 		m_Target          = SOIL_load_OGL_texture(TEXTUREDIR"target.tga", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
-		
+
 		m_Raptor		  = SOIL_load_OGL_texture(TEXTUREDIR"raptor.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 		glBindTexture(GL_TEXTURE_2D, m_Raptor);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -63,6 +65,7 @@ void CommonMeshes::ReleaseMeshes()
 		delete m_pPlane;
 		delete m_pCube;
 		delete m_pSphere;
+		delete m_pRaptor;
 	}
 
 	m_pPlane = NULL;

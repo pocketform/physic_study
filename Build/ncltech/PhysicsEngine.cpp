@@ -96,6 +96,9 @@ void PhysicsEngine::Update(float deltaTime)
 
 void PhysicsEngine::UpdatePhysics()
 {
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_Z))
+		m_atmosphere = !m_atmosphere;
+
 	for (Manifold* m : m_vpManifolds)
 	{
 		delete m;
@@ -146,12 +149,42 @@ void PhysicsEngine::SolveConstraints()
 void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 {
 
+
+
+	//Vector3 obj_to_earth = Vector3(0.0f, 0.0f, 0.0f) - obj->GetPosition();
+	float   distence_to_earth = (Vector3(0.0f, 0.0f, 0.0f) - obj->GetPosition()).Length();
+
 	if (obj->m_CoursWork == true)
 	{
 		//gravity
 		Vector3 g = obj->GetPosition() - Vector3(0, 0, 0)/*the position of planet*/;
 		g.Normalise();
 		m_Gravity = g * (-9.81f); //set the gracity of planet
+
+		if (m_atmosphere == true)
+		{
+			if (distence_to_earth > 10 && distence_to_earth < 15)
+			{
+				m_DampingFactor = 0.8f;
+				if (obj->IsBall() == true )
+				{
+					if (obj->GetColour() != 0.0f)
+					{
+						float colour = obj->GetColour() - 0.01f;
+						obj->setcolour(colour);
+						obj->GetAssociatedObject()->SetColour(Vector4(1.0f, obj->GetColour(), obj->GetColour(), 1.0f));
+					}
+				}
+			}
+			else 
+			{
+				m_DampingFactor = 1.0f;
+			}
+		}
+		else
+		{
+			m_DampingFactor = 1.0f;
+		}
 
 		if (obj->m_InvMass > 0.0f)
 		{
@@ -160,7 +193,7 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 
 		if (obj->m_Rest_State == true)
 		{
-			obj->m_LinearVelocity = Vector3(0.0f, 0.0f, 0.0f);
+			obj->m_LinearVelocity  = Vector3(0.0f, 0.0f, 0.0f);
 			obj->m_AngularVelocity = Vector3(0.0f, 0.0f, 0.0f);
 		}
 
@@ -298,7 +331,7 @@ void PhysicsEngine::BroadPhaseCollisions()
 	{
 		obj->m_isCollide = false;
 		obj->m_DoScore	 = false;
-		obj->m_score     = 0;
+		obj->m_Score     = 0;
 	}
 }
 
@@ -357,7 +390,8 @@ void PhysicsEngine::NarrowPhaseCollisions()
 							cp.pObjectB->m_Rest_State = false;
 						}// set tow object out of rest state
 
-						if ((cp.pObjectA->GetCanScore() == true) && (cp.pObjectB->GetCanScore() == true))
+						if (((cp.pObjectA->IsBall() == true) && (cp.pObjectB->GetTarget() == true)) ||
+							((cp.pObjectB->IsBall() == true) && (cp.pObjectA->GetTarget() == true)))
 						{
 							cp.pObjectA->m_DoScore = true;
 							cp.pObjectB->m_DoScore = true;
@@ -367,23 +401,23 @@ void PhysicsEngine::NarrowPhaseCollisions()
 
 							if (abs(position_A.Length() - position_B.Length()) <= 0.2f )
 							{
-								cp.pObjectA -> m_score = 100;
-								cp.pObjectB -> m_score = 100;
+								cp.pObjectA -> m_Score = 100;
+								cp.pObjectB -> m_Score = 100;
 							}
 							else if (abs(position_A.Length() - position_B.Length()) <= 0.4f)
 							{
-								cp.pObjectA->m_score = 50;
-								cp.pObjectB->m_score = 50;
+								cp.pObjectA->m_Score = 50;
+								cp.pObjectB->m_Score = 50;
 							}
 							else if (abs(position_A.Length() - position_B.Length()) <= 0.6f)
 							{
-								cp.pObjectA->m_score = 30;
-								cp.pObjectB->m_score = 30;
+								cp.pObjectA->m_Score = 30;
+								cp.pObjectB->m_Score = 30;
 							}
 							else
 							{
-								cp.pObjectA->m_score = 10;
-								cp.pObjectB->m_score = 10;
+								cp.pObjectA->m_Score = 10;
+								cp.pObjectB->m_Score = 10;
 							}
 						}
 

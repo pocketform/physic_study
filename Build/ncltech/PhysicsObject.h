@@ -72,12 +72,13 @@ public:
 	const Matrix4&				GetWorldSpaceTransform()    const;	//Built from scratch or returned from cached value
 	//<--------- GETTERS_MO ------------->
 	inline bool					IsColliding()				const   { return m_isCollide; } //get bool to check collision
-	inline bool			        Get_Rest_State()			const   { return m_Rest_State;} //get bool to check rest
 	inline bool					IsInCourseWork()			const	{ return m_CoursWork; } //get bool to check in coursework or not
-	inline bool					GetCanScore()				const   { return m_CanScore; }  //get bool to check can I add score
+	inline bool					IsBall()					const   { return m_IsBall; }    //get bool to check can I add score
+	inline bool			        Get_Rest_State()			const   { return m_Rest_State;} //get bool to check rest
 	inline bool					GetDoScore()				const   { return m_DoScore; }   //get bool to add score
-	inline int					GetScore()					const   { return m_score; }     //get the score when collide
-
+	inline int					GetScore()					const   { return m_Score; }     //get the score when collide
+	inline float				GetColour()					const	{ return m_Colour; }    //get colour
+	inline bool					GetTarget()					const	{ return m_IsTarget; }  //get target
 
 	//<--------- SETTERS ------------->
 	inline void SetElasticity(float elasticity)						{ m_Elasticity = elasticity; }
@@ -97,10 +98,11 @@ public:
 	//<--------- SETTERS_MO ------------->
 	inline void SetRestState(bool rest)								{ m_Rest_State = rest; }			//set rest state
 	inline void SetInCourseWork(bool incoursework)					{ m_CoursWork = incoursework; }		//set in coursework state
-	inline void SetCanScore(bool getscore)							{ m_CanScore = getscore; }			//set state of can I get score
 	inline void SetDoScore(bool doscore)							{ m_DoScore = doscore; }			//set state of get score
-	inline void SetScore(int score)									{ m_score = score; }				//set score when collide
-
+	inline void SetScore(int score)									{ m_Score = score; }				//set score when collide
+	inline void setcolour(float colour)								{ m_Colour = colour; }				//set colour
+	inline void SetIsScore(bool getscore)							{ m_IsBall = getscore; }			//set state of can I get score
+	inline void SetIsTarget(bool target)							{ m_IsTarget = target; }			//set is target
 
 	//Called automatically when PhysicsObject is created through Object::CreatePhysicsNode()
 	inline void SetAssociatedObject(Object* obj)					{ m_pParent = obj; }
@@ -144,7 +146,9 @@ protected:
 	bool				m_isCollide;		//detect whether its colliding or not
 	bool                m_Rest_State;       //detect whether its rest or wake up
 	bool                m_CoursWork;        //detect whether in my coursework
-	bool				m_CanScore;			//detect can I get score
 	bool				m_DoScore;			//detect to get score
-	int					m_score;			//get scores when collide with target
+	bool				m_IsBall;			//detect can I get score with a ball
+	bool				m_IsTarget;			//Is target
+	int					m_Score;			//get scores when collide with target
+	float				m_Colour;           //float to change colour
 };

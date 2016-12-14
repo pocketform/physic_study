@@ -48,6 +48,9 @@ private:
 	NetworkBase m_Network;
 	ENetPeer*	m_pServerConnection;
 	bool        can_send_information;
+	bool		change_colour;
+
+	float		c_Atmosphere;
 
 	int			top01;
 	int			top02;

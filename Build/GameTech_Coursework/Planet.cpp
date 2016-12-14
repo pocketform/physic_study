@@ -3,23 +3,26 @@
 
 void Planet::OnInitializeScene()
 {
-	num_ball         = 0;
-	num_question_box = 0;
-	num_raptor       = 0;
-	num_Score        = 0;
+	num_ball           = 0;
+	num_question_box   = 0;
+	num_raptor         = 0;
+	num_Score          = 0;
+					   
+	top01			   = 0;
+	top02			   = 0;
+	top03			   = 0;
+	top04			   = 0;
+	top05			   = 0;
+	top06			   = 0;
+	top07			   = 0;
+	top08			   = 0;
+	top09			   = 0;
+	top10			   = 0;
+					   
+	score_chenged      = false;
+	change_colour	   = false;
 
-	top01			 = 0;
-	top02			 = 0;
-	top03			 = 0;
-	top04			 = 0;
-	top05			 = 0;
-	top06			 = 0;
-	top07			 = 0;
-	top08			 = 0;
-	top09			 = 0;
-	top10			 = 0;
-
-	score_chenged    = false;
+	c_Atmosphere	   = 0.1f;
 
 	const int pyramid_stack_height = 7;
 
@@ -63,10 +66,25 @@ void Planet::OnInitializeScene()
 	}//initialze the planet
 
 	{
+		this->AddGameObject(CommonUtils::Build_atmosphere_SphereObject(
+			"Atmosphere",
+			Vector3(0.0f, 0.0f, 0.0f),
+			16.0f,
+			false,
+			0.0f,
+			true,
+			false,
+			Vector4(0.6f, 1.0f, 0.8f, 0.1f)));
+
+		//Object* Atmosphere = this->FindGameObject("Atmosphere");
+		//Atmosphere->Physics()->SetRestState(false);
+	}//initialze the Atmosphere
+
+	{
 
 		this->AddGameObject(CommonUtils::Build_Quad_Object(
 			"HorizontalGround_down",
-			Vector3(0.0f, -24.0f, 0.0f),
+			Vector3(0.0f, -34.0f, 0.0f),
 			Vector3(10.0f, 10.0f, 1.0f),
 			true,
 			0.0f,
@@ -80,7 +98,7 @@ void Planet::OnInitializeScene()
 
 		this->AddGameObject(CommonUtils::Build_Quad_Object(
 			"HorizontalGround_up",
-			Vector3(0.0f, -14.0f, 0.0f),
+			Vector3(0.0f, -24.0f, 0.0f),
 			Vector3(10.0f, 10.0f, 1.0f),
 			true,
 			0.0f,
@@ -95,7 +113,7 @@ void Planet::OnInitializeScene()
 
 		this->AddGameObject(CommonUtils::Build_Quad_Object(
 			"VerticalGround_fron",
-			Vector3( 0.0f, -19.0f, -5.0f),
+			Vector3( 0.0f, -29.0f, -5.0f),
 			Vector3(10.0f,  10.0f,  1.0f),
 			true,
 			0.0f,
@@ -109,7 +127,7 @@ void Planet::OnInitializeScene()
 
 		this->AddGameObject(CommonUtils::Build_Quad_Object(
 			"VerticalGround_right",
-			Vector3( 5.0f, -19.0f, 0.0f),
+			Vector3( 5.0f, -29.0f, 0.0f),
 			Vector3(10.0f,  10.0f, 1.0f),
 			true,
 			0.0f,
@@ -122,7 +140,7 @@ void Planet::OnInitializeScene()
 
 		this->AddGameObject(CommonUtils::Build_Quad_Object(
 			"VerticalGround_left",
-			Vector3( -5.0f, -19.0f, 0.0f),
+			Vector3( -5.0f, -29.0f, 0.0f),
 			Vector3( 10.0f,  10.0f, 1.0f),
 			true,
 			0.0f,
@@ -135,7 +153,7 @@ void Planet::OnInitializeScene()
 		
 		this->AddGameObject(CommonUtils::Build_Quad_Object(
 			"VerticalGround_back",
-			Vector3(0.0f, -19.0f, 6.0f),
+			Vector3(0.0f, -29.0f, 5.0f),
 			Vector3(10.0f, 10.0f, 0.1f),
 			true,
 			0.0f,
@@ -256,9 +274,10 @@ void Planet::OnInitializeScene()
 			));
 
 		Object* target = this->FindGameObject("target");
+		target->Physics()->SetIsTarget(true);
 		target->Physics()->SetRestState(true);
 		target->Physics()->SetInCourseWork(true);
-		target->Physics()->SetCanScore(true);
+		//target->Physics()->SetIsScore(true);
 	}//inisialize target 
 
 }
@@ -273,6 +292,28 @@ void Planet::OnUpdateScene(float dt)
 	planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.1f, 0.0f));//let planet keep rooling
 	Object* target = this->FindGameObject("target");
 	target->Physics()->SetAngularVelocity(Vector3(0.0f, 0.1f, 0.0f));
+	Object* Atmosphere = this->FindGameObject("Atmosphere");
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_Z))
+	{
+		change_colour = !change_colour;
+	}
+
+	if (change_colour == true)
+	{
+		if (c_Atmosphere >= 0.0f)
+		{
+			c_Atmosphere -= 0.01f;
+		}
+		Atmosphere->SetColour(Vector4(0.6f, 1.0f, 0.8f, c_Atmosphere));
+	}
+	else
+	{
+		if (c_Atmosphere <= 0.1f)
+		{
+			c_Atmosphere += 0.01f;
+		}
+		Atmosphere->SetColour(Vector4(0.6f, 1.0f, 0.8f, c_Atmosphere));
+	}
 
 	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Push 'J' to throw a ball");
 	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), " ");
@@ -480,7 +521,7 @@ void Planet::Ball_From_Camera()
 		Object* ball = this->FindGameObject(ballshootName.str().c_str());
 		ball->Physics()->SetRestState(false);
 		ball->Physics()->SetInCourseWork(true);
-		ball->Physics()->SetCanScore(true);
+		ball->Physics()->SetIsScore(true);
 		ball->Physics()->SetLinearVelocity(viewDir * 35.f);
 
 		num_ball++;

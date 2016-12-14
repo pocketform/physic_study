@@ -7,9 +7,11 @@ PhysicsObject::PhysicsObject()
 	, m_isCollide(false)				//initialize the collision
 	, m_Rest_State(false)				//initialize not in rest state
 	, m_CoursWork(false)                //initialize not in coursework
-	, m_CanScore(false)                 //initialize can't get score
+	, m_IsBall(false)					//initialize can't get score
+	, m_IsTarget(false)					//initialize isn't target
 	, m_DoScore(false)					//initialize don't add score
-	, m_score(0)						//initialize the score
+	, m_Score(0)						//initialize the score
+	, m_Colour(1.0f)					//initialize the colour
 	, m_Position(0.0f, 0.0f, 0.0f)
 	, m_LinearVelocity(0.0f, 0.0f, 0.0f)
 	, m_Force(0.0f, 0.0f, 0.0f)

@@ -108,7 +108,7 @@ void TestScene::OnInitializeScene()
 						1.f,				// Physical Mass (must have physics enabled)
 						true,				// Physically Collidable (has collision shape)
 						false,				// Dragable by user?
-						col);// Render colour
+						col);				// Render colour
 					this->AddGameObject(sphere);
 				}
 			}

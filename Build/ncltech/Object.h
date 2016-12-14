@@ -68,9 +68,9 @@ public:
 
 
 
-
-
-
+//---------- MO ------------->
+	//void   SetChangeColour(float colour)  { m_change_colour = colour; }
+	//float  GetChangeColour()					  { return m_change_colour; }
 
 //<------- Object Parameters ------>
 	//Get the name of this object (if set)
@@ -163,4 +163,7 @@ protected:
 	//Misc Parameters
 	uint						m_FrustumCullFlags;
 	uint						m_ScreenPickerIdx;  
+
+	//Mo
+	float						m_change_colour;
 };
