@@ -427,12 +427,12 @@ void PhysicsEngine::NarrowPhaseCollisions()
 							Vector3 position_A = cp.pObjectA->GetPosition();
 							Vector3 position_B = cp.pObjectB->GetPosition();
 
-							if (abs(position_A.Length() - position_B.Length()) <= 0.2f )
+							if (abs(position_A.Length() - position_B.Length()) <= 0.1f )
 							{
 								cp.pObjectA -> m_Score = 100;
 								cp.pObjectB -> m_Score = 100;
 							}
-							else if (abs(position_A.Length() - position_B.Length()) <= 0.4f)
+							else if (abs(position_A.Length() - position_B.Length()) <= 0.3f)
 							{
 								cp.pObjectA->m_Score = 50;
 								cp.pObjectB->m_Score = 50;
