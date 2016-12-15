@@ -91,6 +91,8 @@ void PhysicsEngine::Update(float deltaTime)
 			m_UpdateAccum = 0.0f;
 		}
 	}
+
+
 }
 
 
@@ -116,6 +118,30 @@ void PhysicsEngine::UpdatePhysics()
 	for (PhysicsObject* obj : m_PhysicsObjects)
 	{
 		UpdatePhysicsObject(obj);
+
+		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_M))
+		{
+			int temp = obj->GetDebugControl();
+			obj->SetDebugControl(temp + 1);
+			//c_debug_state++;
+
+			if (obj->GetDebugControl() >= 3)
+			{
+				obj->SetDebugControl(0);
+			}
+
+			if (obj->GetDebugControl() == 1)
+			{
+				Vector4 colour = obj->GetAssociatedObject()->GetColour();
+				obj->GetAssociatedObject()->SetColour(Vector4(0.0f, 0.0f, 0.0f, 0.0f));
+			}
+
+			if (obj->GetDebugControl() == 2)
+			{
+				Vector4 colour = obj->GetAssociatedObject()->GetColour();
+				obj->GetAssociatedObject()->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+		}
 	}
 }
 
@@ -233,6 +259,8 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 		obj->m_Orientation.Normalise();
 
 		obj->m_wsTransformInvalidated = true;
+
+
 	}
 	
 	else

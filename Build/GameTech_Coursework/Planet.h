@@ -27,11 +27,13 @@ public:
 	//-------< Net Work >-------//
 	virtual void OnCleanupScene() override;
 	void ProcessNetworkEvent(const ENetEvent& evnt);
+	void Update_Network(float dt);
 
 	//-----< Make Scence more clearlly >------//
 	void Ball_From_Camera();
-	void DrawFlags();
+	void Control_Debug();
 	void Update_Score();
+	void Control_Atmosphere();
 private:
 	uint    my_drawFlag;
 
@@ -44,13 +46,15 @@ private:
 
 	int     num_Score;
 
+	float	c_Atmosphere;
+
+	int		c_debug_state;
+
 	//-------< Net Work >-------//
 	NetworkBase m_Network;
 	ENetPeer*	m_pServerConnection;
 	bool        can_send_information;
 	bool		change_colour;
-
-	float		c_Atmosphere;
 
 	int			top01;
 	int			top02;

@@ -79,6 +79,7 @@ public:
 	inline int					GetScore()					const   { return m_Score; }     //get the score when collide
 	inline float				GetColour()					const	{ return m_Colour; }    //get colour
 	inline bool					GetTarget()					const	{ return m_IsTarget; }  //get target
+	inline int					GetDebugControl()			const   { return m_Debug_Control; }
 
 	//<--------- SETTERS ------------->
 	inline void SetElasticity(float elasticity)						{ m_Elasticity = elasticity; }
@@ -103,6 +104,7 @@ public:
 	inline void setcolour(float colour)								{ m_Colour = colour; }				//set colour
 	inline void SetIsScore(bool getscore)							{ m_IsBall = getscore; }			//set state of can I get score
 	inline void SetIsTarget(bool target)							{ m_IsTarget = target; }			//set is target
+	inline void SetDebugControl(int alpha)							{ m_Debug_Control = alpha; }		//set the value to control the transparence of 
 
 	//Called automatically when PhysicsObject is created through Object::CreatePhysicsNode()
 	inline void SetAssociatedObject(Object* obj)					{ m_pParent = obj; }
@@ -150,5 +152,6 @@ protected:
 	bool				m_IsBall;			//detect can I get score with a ball
 	bool				m_IsTarget;			//Is target
 	int					m_Score;			//get scores when collide with target
+	int					m_Debug_Control;    //the value to control is transparence or not
 	float				m_Colour;           //float to change colour
 };

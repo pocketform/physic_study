@@ -23,6 +23,7 @@ void Planet::OnInitializeScene()
 	change_colour	   = false;
 
 	c_Atmosphere	   = 0.1f;
+	c_debug_state	   = 0;
 
 	const int pyramid_stack_height = 7;
 
@@ -90,7 +91,7 @@ void Planet::OnInitializeScene()
 			0.0f,
 			true,
 			false,
-			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+			Vector4(1.0f, 1.0f, 1.0f, 1.0f)));
 
 		Object* HorizontalGround_down = this->FindGameObject("HorizontalGround_down");
 		HorizontalGround_down->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(90.0f,0.0f,0.0f));
@@ -104,7 +105,7 @@ void Planet::OnInitializeScene()
 			0.0f,
 			true,
 			false,
-			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+			Vector4(1.0f, 1.0f, 1.0f, 1.0f)));
 
 		Object* HorizontalGround_up = this->FindGameObject("HorizontalGround_up");
 		HorizontalGround_up->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(-90.0f, 0.0f, 0.0f));
@@ -119,7 +120,7 @@ void Planet::OnInitializeScene()
 			0.0f,
 			true,
 			false,
-			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+			Vector4(1.0f, 1.0f, 1.0f, 1.0f)));
 
 		Object* VerticalGround_fron = this->FindGameObject("VerticalGround_fron");
 		VerticalGround_fron->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0.0f, 180.0f, 0.0f));
@@ -133,7 +134,7 @@ void Planet::OnInitializeScene()
 			0.0f,
 			true,
 			false,
-			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+			Vector4(1.0f, 1.0f, 1.0f, 1.0f)));
 
 		Object* VerticalGround_right = this->FindGameObject("VerticalGround_right");
 		VerticalGround_right->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0.0f, 90.0f, 0.0f));
@@ -146,7 +147,7 @@ void Planet::OnInitializeScene()
 			0.0f,
 			true,
 			false,
-			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+			Vector4(1.0f, 1.0f, 1.0f, 1.0f)));
 
 		Object* VerticalGround_left = this->FindGameObject("VerticalGround_left");
 		VerticalGround_left->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0.0f, -90.0f, 0.0f));
@@ -159,7 +160,7 @@ void Planet::OnInitializeScene()
 			0.0f,
 			true,
 			false,
-			Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+			Vector4(1.0f, 1.0f, 1.0f, 1.0f)));
 
 		Object* VerticalGround_back = this->FindGameObject("VerticalGround_back");
 		VerticalGround_back->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0.0f, 0.0f, 0.0f));
@@ -173,7 +174,7 @@ void Planet::OnInitializeScene()
 		0.0f,
 		true,
 		false,
-		Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+		Vector4(1.0f, 1.0f, 1.0f, 1.0f)));
 
 	this->AddGameObject(CommonUtils::BuildSphereObject(
 		"this_ball",
@@ -291,14 +292,116 @@ void Planet::OnUpdateScene(float dt)
 	Object* planet = this->FindGameObject("Planet");
 	planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.1f, 0.0f));//let planet keep rooling
 	Object* target = this->FindGameObject("target");
-	target->Physics()->SetAngularVelocity(Vector3(0.0f, 0.1f, 0.0f));
+	target->Physics()->SetAngularVelocity(Vector3(0.0f, 0.1f, 0.0f));//let target keep rooling
+
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Push 'J' to throw a ball");
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Push 'Z' to change the state of Atmosphere");
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Push 'M' to control the state of debug mod");
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Push 'N' to draw the colliction point");
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "%d", c_debug_state);
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "%d", 
+		target->Physics()->GetDebugControl());
+
+	Control_Atmosphere();
+
+	Update_Score();
+
+	Control_Debug();
+
+	Ball_From_Camera();
+
+	Update_Network(dt);
+}
+
+
+//throwing a ball form camera
+void Planet::Ball_From_Camera()
+{
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_J))
+	{
+		Matrix4 viewMtx = SceneManager::Instance()->GetCamera()->BuildViewMatrix();
+		Vector3 viewDir = - Vector3(viewMtx[2], viewMtx[6], viewMtx[10]);
+
+		ostringstream ballshootName;
+		ballshootName << "ball" << num_ball;
+
+		Object* ballshoot = CommonUtils::Build_Ball_SphereObject(
+			ballshootName.str().c_str(),
+			SceneManager::Instance()->GetCamera()->GetPosition(),
+			0.5f,
+			true,
+			0.1f,
+			true,
+			false,
+			Vector4(1.f, 1.f, 1.f, 1.f));
+		this->AddGameObject(ballshoot);
+
+		Object* ball = this->FindGameObject(ballshootName.str().c_str());
+		ball->Physics()->SetRestState(false);
+		ball->Physics()->SetInCourseWork(true);
+		ball->Physics()->SetIsScore(true);
+		ball->Physics()->SetLinearVelocity(viewDir * 35.f);
+
+		num_ball++;
+	}
+}
+
+void Planet::Control_Debug()
+{
+	//uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_M))
+	{
+		c_debug_state++;
+
+		if (c_debug_state >= 3)
+		{
+			c_debug_state = 0;
+		}
+
+		if (c_debug_state == 1)
+		{
+			my_drawFlag ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
+		}
+
+		if (c_debug_state == 0)
+		{
+			my_drawFlag ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
+		}
+	}
+
+
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_N))
+		my_drawFlag ^= DEBUGDRAW_FLAGS_COLLISIONNORMALS;
+
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Volumes : %s (Press C to toggle)", (my_drawFlag & DEBUGDRAW_FLAGS_COLLISIONVOLUMES) ? "Enabled" : "Disabled");
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Normals : %s (Press N to toggle)", (my_drawFlag & DEBUGDRAW_FLAGS_COLLISIONNORMALS) ? "Enabled" : "Disabled");
+
+	PhysicsEngine::Instance()->SetDebugDrawFlags(my_drawFlag);
+}
+
+void Planet::Update_Score()
+{
+	Object* target = this->FindGameObject("target");
+
+	if (target->Physics()->GetDoScore() == true)
+	{
+		num_Score += target->Physics()->GetScore();
+		NCLDebug::Log("You get %d scores", target->Physics()->GetScore());
+	}
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Your All Scores: %d", this->num_Score);
+}
+
+void Planet::Control_Atmosphere()
+{
 	Object* Atmosphere = this->FindGameObject("Atmosphere");
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_Z))
 	{
 		change_colour = !change_colour;
 	}
 
-	if (change_colour == true)
+	if (change_colour == true || c_debug_state == 1)
 	{
 		if (c_Atmosphere >= 0.0f)
 		{
@@ -308,21 +411,109 @@ void Planet::OnUpdateScene(float dt)
 	}
 	else
 	{
-		if (c_Atmosphere <= 0.1f)
+		if (c_debug_state == 2 || change_colour == false)
 		{
-			c_Atmosphere += 0.01f;
+			if (c_Atmosphere <= 0.1f)
+			{
+				c_Atmosphere += 0.01f;
+			}
 		}
 		Atmosphere->SetColour(Vector4(0.6f, 1.0f, 0.8f, c_Atmosphere));
 	}
+}
 
-	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Push 'J' to throw a ball");
-	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), " ");
+//for Network
+void Planet::OnCleanupScene()
+{
+	Scene::OnCleanupScene();
+	//m_pObj = NULL; // Deleted in above function
 
-	Update_Score();
+				   //Send one final packet telling the server we are disconnecting
+				   // - We are not waiting to resend this, so if it fails to arrive
+				   //   the server will have to wait until we time out naturally
+	enet_peer_disconnect_now(m_pServerConnection, 0);
 
-	DrawFlags();
+	//Release network and all associated data/peer connections
+	m_Network.Release();
+	m_pServerConnection = NULL;
+}
 
-	Ball_From_Camera();
+//for Network
+void Planet::ProcessNetworkEvent(const ENetEvent& evnt)
+{
+	Object* target = this->FindGameObject("target");
+
+	//if (this->can_send_information == true)
+	//{
+	//	char* text_data = "you get a score!";
+	//	ENetPacket* packet = enet_packet_create(text_data, strlen(text_data) + 1, ENET_PACKET_FLAG_RELIABLE);
+	//	enet_peer_send(m_pServerConnection, 0, packet);
+	//}
+
+	//if (this->score_chenged == true)
+	//{
+	//	ostringstream text_top01;
+	//	text_top01 << "Top 01 is " << target->Physics()->GetScore();
+	//	ENetPacket* packet = enet_packet_create(text_top01.str().c_str(), strlen(text_top01.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+	//	enet_peer_send(m_pServerConnection, 0, packet);
+
+
+	//	//ostringstream text_top02;
+	//	//text_top02 << "Top 02 is " << target->Physics()->GetScore();
+	//	//ENetPacket* packet02 = enet_packet_create(text_top02.str().c_str(), strlen(text_top02.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
+	//	//enet_peer_send(m_pServerConnection, 0, packet02);
+
+	//}
+
+	switch (evnt.type)
+	{
+		//New connection request or an existing peer accepted our connection request
+		case ENET_EVENT_TYPE_CONNECT:
+		{
+			if (evnt.peer == m_pServerConnection)
+			{
+				NCLDebug::Log("Network: Successfully connected to server!");
+
+				//Send a 'hello' packet
+				char* text_data = "I'm Mr CourseWork";
+				ENetPacket* packet = enet_packet_create(text_data, strlen(text_data) + 1, 0);
+				enet_peer_send(m_pServerConnection, 0, packet);
+			}
+		}
+		break;
+
+
+		//Server has sent us a new packet
+		case ENET_EVENT_TYPE_RECEIVE:
+		{
+			if (evnt.packet->dataLength == sizeof(Vector3))
+			{
+				//Vector3 pos;
+				//memcpy(&pos, evnt.packet->data, sizeof(Vector3));
+				//m_pObj->Physics()->SetPosition(pos);
+			}
+			else
+			{
+				NCLERROR("Recieved Invalid Network Packet!");
+			}
+
+		}
+		break;
+
+		//Server has disconnected
+		case ENET_EVENT_TYPE_DISCONNECT:
+		{
+			NCLDebug::Log("Network: Server has disconnected!");
+		}
+		break;
+	}
+}
+
+//for Network
+void Planet::Update_Network(float dt)
+{
+	Object* planet = this->FindGameObject("Planet");
+	Object* target = this->FindGameObject("target");
 
 	if (target->Physics()->GetDoScore() == true)
 	{
@@ -409,7 +600,7 @@ void Planet::OnUpdateScene(float dt)
 	else
 	{
 		can_send_information = false;
-		score_chenged		 = false;
+		score_chenged = false;
 	}
 
 	//Update Network
@@ -493,150 +684,4 @@ void Planet::OnUpdateScene(float dt)
 	NCLDebug::AddStatusEntry(status_color, "Network Traffic");
 	NCLDebug::AddStatusEntry(status_color, "    Incoming: %5.2fKbps", m_Network.m_IncomingKb);
 	NCLDebug::AddStatusEntry(status_color, "    Outgoing: %5.2fKbps", m_Network.m_OutgoingKb);
-}
-
-
-//throwing a ball form camera
-void Planet::Ball_From_Camera()
-{
-	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_J))
-	{
-		Matrix4 viewMtx = SceneManager::Instance()->GetCamera()->BuildViewMatrix();
-		Vector3 viewDir = - Vector3(viewMtx[2], viewMtx[6], viewMtx[10]);
-
-		ostringstream ballshootName;
-		ballshootName << "ball" << num_ball;
-
-		Object* ballshoot = CommonUtils::Build_Ball_SphereObject(
-			ballshootName.str().c_str(),
-			SceneManager::Instance()->GetCamera()->GetPosition(),
-			0.5f,
-			true,
-			0.1f,
-			true,
-			false,
-			Vector4(1.f, 1.f, 1.f, 1.f));
-		this->AddGameObject(ballshoot);
-
-		Object* ball = this->FindGameObject(ballshootName.str().c_str());
-		ball->Physics()->SetRestState(false);
-		ball->Physics()->SetInCourseWork(true);
-		ball->Physics()->SetIsScore(true);
-		ball->Physics()->SetLinearVelocity(viewDir * 35.f);
-
-		num_ball++;
-	}
-}
-
-void Planet::DrawFlags()
-{
-	//uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
-
-	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_C))
-		my_drawFlag ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
-
-	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_N))
-		my_drawFlag ^= DEBUGDRAW_FLAGS_COLLISIONNORMALS;
-
-	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Volumes : %s (Press C to toggle)", (my_drawFlag & DEBUGDRAW_FLAGS_COLLISIONVOLUMES) ? "Enabled" : "Disabled");
-	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Normals : %s (Press N to toggle)", (my_drawFlag & DEBUGDRAW_FLAGS_COLLISIONNORMALS) ? "Enabled" : "Disabled");
-
-	PhysicsEngine::Instance()->SetDebugDrawFlags(my_drawFlag);
-}
-
-void Planet::Update_Score()
-{
-	Object* target = this->FindGameObject("target");
-
-	if (target->Physics()->GetDoScore() == true)
-	{
-		num_Score += target->Physics()->GetScore();
-		NCLDebug::Log("You get %d scores", target->Physics()->GetScore());
-	}
-	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Your All Scores: %d", this->num_Score);
-}
-
-void Planet::OnCleanupScene()
-{
-	Scene::OnCleanupScene();
-	//m_pObj = NULL; // Deleted in above function
-
-				   //Send one final packet telling the server we are disconnecting
-				   // - We are not waiting to resend this, so if it fails to arrive
-				   //   the server will have to wait until we time out naturally
-	enet_peer_disconnect_now(m_pServerConnection, 0);
-
-	//Release network and all associated data/peer connections
-	m_Network.Release();
-	m_pServerConnection = NULL;
-}
-
-void Planet::ProcessNetworkEvent(const ENetEvent& evnt)
-{
-	Object* target = this->FindGameObject("target");
-
-	//if (this->can_send_information == true)
-	//{
-	//	char* text_data = "you get a score!";
-	//	ENetPacket* packet = enet_packet_create(text_data, strlen(text_data) + 1, ENET_PACKET_FLAG_RELIABLE);
-	//	enet_peer_send(m_pServerConnection, 0, packet);
-	//}
-
-	//if (this->score_chenged == true)
-	//{
-	//	ostringstream text_top01;
-	//	text_top01 << "Top 01 is " << target->Physics()->GetScore();
-	//	ENetPacket* packet = enet_packet_create(text_top01.str().c_str(), strlen(text_top01.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
-	//	enet_peer_send(m_pServerConnection, 0, packet);
-
-
-	//	//ostringstream text_top02;
-	//	//text_top02 << "Top 02 is " << target->Physics()->GetScore();
-	//	//ENetPacket* packet02 = enet_packet_create(text_top02.str().c_str(), strlen(text_top02.str().c_str()) + 1, ENET_PACKET_FLAG_RELIABLE);
-	//	//enet_peer_send(m_pServerConnection, 0, packet02);
-
-	//}
-
-	switch (evnt.type)
-	{
-		//New connection request or an existing peer accepted our connection request
-		case ENET_EVENT_TYPE_CONNECT:
-		{
-			if (evnt.peer == m_pServerConnection)
-			{
-				NCLDebug::Log("Network: Successfully connected to server!");
-
-				//Send a 'hello' packet
-				char* text_data = "I'm Mr CourseWork";
-				ENetPacket* packet = enet_packet_create(text_data, strlen(text_data) + 1, 0);
-				enet_peer_send(m_pServerConnection, 0, packet);
-			}
-		}
-		break;
-
-
-		//Server has sent us a new packet
-		case ENET_EVENT_TYPE_RECEIVE:
-		{
-			if (evnt.packet->dataLength == sizeof(Vector3))
-			{
-				Vector3 pos;
-				memcpy(&pos, evnt.packet->data, sizeof(Vector3));
-				//m_pObj->Physics()->SetPosition(pos);
-			}
-			else
-			{
-				NCLERROR("Recieved Invalid Network Packet!");
-			}
-
-		}
-		break;
-
-		//Server has disconnected
-		case ENET_EVENT_TYPE_DISCONNECT:
-		{
-			NCLDebug::Log("Network: Server has disconnected!");
-		}
-		break;
-	}
 }

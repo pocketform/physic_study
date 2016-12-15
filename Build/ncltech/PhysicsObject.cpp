@@ -12,6 +12,7 @@ PhysicsObject::PhysicsObject()
 	, m_DoScore(false)					//initialize don't add score
 	, m_Score(0)						//initialize the score
 	, m_Colour(1.0f)					//initialize the colour
+	, m_Debug_Control(0)				//initiallize the debug value
 	, m_Position(0.0f, 0.0f, 0.0f)
 	, m_LinearVelocity(0.0f, 0.0f, 0.0f)
 	, m_Force(0.0f, 0.0f, 0.0f)
